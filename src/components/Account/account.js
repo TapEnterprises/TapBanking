@@ -1,13 +1,13 @@
 import React from "react";
 import Back from "../Navigation/back";
 
-const Settings = () => {
+const Account = () => {
   return (
     <div>
       <Back />
-      <h1>Settings</h1>
+      <h1>Account</h1>
     </div>
   );
 };
 
-export default Settings;
+export default Account;

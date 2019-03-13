@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
+import Back from "../Navigation/back";
 
-class Transaction extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return <h1>Transaction</h1>;
-  }
-}
+const Transaction = () => {
+  return (
+    <div>
+      <Back />
+      <h1>Transaction</h1>
+    </div>
+  );
+};
 
 export default Transaction;

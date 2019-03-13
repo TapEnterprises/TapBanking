@@ -1,0 +1,17 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.background {
+  height: 400px;
+  background-image: linear-gradient(to right, #6f48e8, #3c90e8);
+}
+
+.center {
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+}
