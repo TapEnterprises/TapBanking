@@ -17,11 +17,12 @@ const Back = props => {
         }}
       >
         <Toolbar>
-          <IconButton>
+          <IconButton className="float-left">
             <IconContext.Provider value={{ color: "white" }}>
               <FiChevronLeft onClick={goback} />
             </IconContext.Provider>
           </IconButton>
+          <h1 className="float-right">{props.title}</h1>
         </Toolbar>
       </AppBar>
     </div>

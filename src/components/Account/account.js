@@ -4,8 +4,7 @@ import Back from "../Navigation/back";
 const Account = () => {
   return (
     <div>
-      <Back />
-      <h1>Account</h1>
+      <Back title="Account" />
     </div>
   );
 };
