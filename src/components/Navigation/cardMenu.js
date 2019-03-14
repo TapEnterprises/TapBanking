@@ -1,7 +1,13 @@
 import React from "react";
 import { Grid, CardContent, Card, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { FiShoppingCart, FiSettings, FiUser } from "react-icons/fi";
+import {
+  FiShoppingCart,
+  FiSettings,
+  FiUser,
+  FiDollarSign,
+  FiShoppingBag
+} from "react-icons/fi";
 import "../Home/home.css";
 
 const CardMenu = () => {
@@ -35,6 +41,34 @@ const CardMenu = () => {
                 <FiUser />
               </IconButton>
               <CardContent style={{ paddingTop: "unset" }}>Account</CardContent>
+            </Card>
+          </Link>
+        </Grid>
+        <Grid item xs={6}>
+          <Link
+            to={{
+              pathname: "/budgets"
+            }}
+          >
+            <Card>
+              <IconButton style={{ paddingBottom: "5px" }}>
+                <FiDollarSign />
+              </IconButton>
+              <CardContent style={{ paddingTop: "unset" }}>Budgets</CardContent>
+            </Card>
+          </Link>
+        </Grid>
+        <Grid item xs={6}>
+          <Link
+            to={{
+              pathname: "/savings"
+            }}
+          >
+            <Card>
+              <IconButton style={{ paddingBottom: "5px" }}>
+                <FiShoppingBag />
+              </IconButton>
+              <CardContent style={{ paddingTop: "unset" }}>Savings</CardContent>
             </Card>
           </Link>
         </Grid>
