@@ -4,8 +4,7 @@ import Back from "../Navigation/back";
 const Settings = () => {
   return (
     <div>
-      <Back />
-      <h1>Settings</h1>
+      <Back title="Settings" />
     </div>
   );
 };
