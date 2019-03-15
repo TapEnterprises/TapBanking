@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Transaction",
+    "pathname": "/transaction",
+    "size": 6
+  },
+  {
+    "title": "Account",
+    "pathname": "/account",
+    "size": 6
+  },
+  {
+    "title": "Budget",
+    "pathname": "/budgets",
+    "size": 6
+  },
+  {
+    "title": "Savings",
+    "pathname": "/savings",
+    "size": 6
+  },
+  {
+    "title": "Settings",
+    "pathname": "/settings",
+    "size": 12
+  }
+]
