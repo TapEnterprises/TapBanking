@@ -12,6 +12,13 @@ const Back = props => {
   const location = props.location.pathname;
 
   if (location !== "/") {
+    var indices = [];
+    for (var i = 0; i < location.length; i++) {
+      if (location[i] === "/") indices.push(i);
+    }
+    var indexOfLastWord = indices[indices.length - 1];
+    var displayTitle = location.slice(indexOfLastWord, location.length);
+
     return (
       <div>
         <AppBar
@@ -26,7 +33,8 @@ const Back = props => {
               </IconContext.Provider>
             </IconButton>
             <h3 className="float-right">
-              {location.charAt(1).toUpperCase() + location.slice(1).substr(1)}
+              {displayTitle.charAt(1).toUpperCase() +
+                displayTitle.slice(1).substr(1)}
             </h3>
           </Toolbar>
         </AppBar>
