@@ -6,20 +6,21 @@ import settings from "./components/Settings/settings";
 import transaction from "./components/Transaction/transaction";
 import budgets from "./components/Budget/budgets";
 import savings from "./components/Savings/savings";
+import Back from "./components/Navigation/back";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <Router>
-          <div>
+          <Back>
             <Route path="/" exact component={home} />
             <Route path="/settings" component={settings} />
             <Route path="/account" component={account} />
             <Route path="/transaction" component={transaction} />
             <Route path="/budgets" component={budgets} />
             <Route path="/savings" component={savings} />
-          </div>
+          </Back>
         </Router>
       </div>
     );
