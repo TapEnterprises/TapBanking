@@ -11,123 +11,31 @@ const Back = props => {
 
   const location = props.location.pathname;
 
-  if (location === "/") {
+  if (location !== "/") {
+    return (
+      <div>
+        <AppBar
+          style={{
+            backgroundImage: "linear-gradient(to right, #6f48e8, #3c90e8)"
+          }}
+        >
+          <Toolbar>
+            <IconButton className="float-left">
+              <IconContext.Provider value={{ color: "white" }}>
+                <FiChevronLeft onClick={goback} />
+              </IconContext.Provider>
+            </IconButton>
+            <h3 className="float-right">
+              {location.charAt(1).toUpperCase() + location.slice(1).substr(1)}
+            </h3>
+          </Toolbar>
+        </AppBar>
+        <div style={{ paddingBottom: "50px" }} />
+        {props.children}
+      </div>
+    );
+  } else {
     return props.children;
-  }
-
-  if (location.includes("/transaction")) {
-    return (
-      <div>
-        <AppBar
-          style={{
-            backgroundImage: "linear-gradient(to right, #6f48e8, #3c90e8)"
-          }}
-        >
-          <Toolbar>
-            <IconButton className="float-left">
-              <IconContext.Provider value={{ color: "white" }}>
-                <FiChevronLeft onClick={goback} />
-              </IconContext.Provider>
-            </IconButton>
-            <h3 className="float-right">Transaction</h3>
-          </Toolbar>
-        </AppBar>
-        <div style={{ paddingBottom: "50px" }} />
-        {props.children}
-      </div>
-    );
-  }
-
-  if (location.includes("/account")) {
-    return (
-      <div>
-        <AppBar
-          style={{
-            backgroundImage: "linear-gradient(to right, #6f48e8, #3c90e8)"
-          }}
-        >
-          <Toolbar>
-            <IconButton className="float-left">
-              <IconContext.Provider value={{ color: "white" }}>
-                <FiChevronLeft onClick={goback} />
-              </IconContext.Provider>
-            </IconButton>
-            <h3 className="float-right">Account</h3>
-          </Toolbar>
-        </AppBar>
-        <div style={{ paddingBottom: "50px" }} />
-        {props.children}
-      </div>
-    );
-  }
-
-  if (location.includes("/budgets")) {
-    return (
-      <div>
-        <AppBar
-          style={{
-            backgroundImage: "linear-gradient(to right, #6f48e8, #3c90e8)"
-          }}
-        >
-          <Toolbar>
-            <IconButton className="float-left">
-              <IconContext.Provider value={{ color: "white" }}>
-                <FiChevronLeft onClick={goback} />
-              </IconContext.Provider>
-            </IconButton>
-            <h3 className="float-right">Budgets</h3>
-          </Toolbar>
-        </AppBar>
-        <div style={{ paddingBottom: "50px" }} />
-        {props.children}
-      </div>
-    );
-  }
-
-  if (location.includes("/savings")) {
-    return (
-      <div>
-        <AppBar
-          style={{
-            backgroundImage: "linear-gradient(to right, #6f48e8, #3c90e8)"
-          }}
-        >
-          <Toolbar>
-            <IconButton className="float-left">
-              <IconContext.Provider value={{ color: "white" }}>
-                <FiChevronLeft onClick={goback} />
-              </IconContext.Provider>
-            </IconButton>
-            <h3 className="float-right">Savings</h3>
-          </Toolbar>
-        </AppBar>
-        <div style={{ paddingBottom: "50px" }} />
-        {props.children}
-      </div>
-    );
-  }
-
-  if (location.includes("/settings")) {
-    return (
-      <div>
-        <AppBar
-          style={{
-            backgroundImage: "linear-gradient(to right, #6f48e8, #3c90e8)"
-          }}
-        >
-          <Toolbar>
-            <IconButton className="float-left">
-              <IconContext.Provider value={{ color: "white" }}>
-                <FiChevronLeft onClick={goback} />
-              </IconContext.Provider>
-            </IconButton>
-            <h3 className="float-right">Settings</h3>
-          </Toolbar>
-        </AppBar>
-        <div style={{ paddingBottom: "50px" }} />
-        {props.children}
-      </div>
-    );
   }
 };
 
