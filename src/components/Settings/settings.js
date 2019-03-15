@@ -1,10 +1,9 @@
 import React from "react";
-import Back from "../Navigation/back";
 
 const Settings = () => {
   return (
     <div>
-      <Back title="Settings" />
+      <h1>Settings</h1>
     </div>
   );
 };

@@ -1,10 +1,9 @@
 import React from "react";
-import Back from "../Navigation/back";
 
 const Budget = () => {
   return (
     <div>
-      <Back title="Budgets" />
+      <h1>Budget</h1>
     </div>
   );
 };
