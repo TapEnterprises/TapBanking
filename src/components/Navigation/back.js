@@ -16,8 +16,8 @@ const Back = props => {
     for (var i = 0; i < location.length; i++) {
       if (location[i] === "/") indices.push(i);
     }
-    var indexOfLastWord = indices[indices.length - 1];
-    var displayTitle = location.slice(indexOfLastWord, location.length);
+    const indexOfLastWord = indices[indices.length - 1];
+    const displayTitle = location.slice(indexOfLastWord, location.length);
 
     return (
       <div>
