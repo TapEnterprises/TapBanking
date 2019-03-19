@@ -15,3 +15,54 @@ a {
   transform: translate(-50%, -50%);
   justify-content: center;
 }
+
+.bigContainer {
+  display: flex;
+  justify-content: space-between;
+  height: 30vh;
+  width: 80vw;
+  animation: growing 1s;
+}
+
+.smallContainer {
+  animation: shrinking 1s;
+}
+
+.fadeIn {
+  animation: fadeIn 1s;
+}
+
+h4 {
+  margin-left: 10vw;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+@keyframes growing {
+  from {
+    height: 100px;
+    width: 100px;
+  }
+  to {
+    height: 30vh;
+    width: 75vw;
+  }
+}
+
+@keyframes shrinking {
+  from {
+    height: 30vh;
+    width: 75vw;
+  }
+  to {
+    height: 100px;
+    width: 100px;
+  }
+}
