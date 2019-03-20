@@ -1,0 +1,32 @@
+.loginBackground {
+  text-align: center;
+  margin-top: -3vh;
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(to right, #6f48e8, #3c90e8);
+}
+
+h1 {
+  color: #ffffff;
+  text-align: center;
+  padding: 2em;
+}
+
+.loginHref {
+  color: blue;
+}
+
+.inlineBlock {
+  display: "inline-block";
+}
+
+.paddingBottom {
+  padding-bottom: "2em";
+}
+
+.formStyling {
+  background-color: "white";
+  width: "90vw";
+  text-align: "center";
+  padding-bottom: "2em";
+}
