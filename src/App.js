@@ -9,6 +9,12 @@ import savings from "./components/Savings/savings";
 import Back from "./components/Navigation/back";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: props.user
+    };
+  }
   render() {
     return (
       <div className="App">
