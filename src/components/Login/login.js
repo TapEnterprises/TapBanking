@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { TextField, FormControl, Button } from "@material-ui/core";
-import firebase from "../configuration/firebase";
+import firebase from "../Configuration/firebase";
 import "./login.css";
 
 class Login extends Component {
@@ -22,7 +22,7 @@ class Login extends Component {
         .auth()
         .createUserWithEmailAndPassword(this.state.Email, this.state.Password)
         .then(() => {
-          var user = firebase.auth().currentUser;
+          const user = firebase.auth().currentUser;
           user.updateProfile({
             displayName: [this.state.FirstName, this.state.LastName].join(" ")
           });

@@ -4,11 +4,10 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Login from "./components/Login/login";
-import firebase from "./components/configuration/firebase";
+import firebase from "./components/Configuration/firebase";
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    console.log(user);
     ReactDOM.render(<App user={user} />, document.getElementById("root"));
   } else {
     ReactDOM.render(<Login />, document.getElementById("root"));
