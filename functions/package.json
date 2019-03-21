@@ -15,7 +15,6 @@
     "express": "^4.16.4",
     "firebase-admin": "~7.0.0",
     "firebase-functions": "^2.2.0",
-    "moment": "^2.24.0",
     "plaid": "^3.0.0"
   },
   "devDependencies": {
