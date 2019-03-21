@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const moment = require("moment");
 const plaid = require("plaid");
+const cors = require("cors");
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -35,6 +36,15 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use(
+  cors({
+    allowedHeaders: ["sessionId", "Content-Type"],
+    exposedHeaders: ["sessionId"],
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false
+  })
+);
 
 app.post("/get_access_token", (request, response, next) => {
   PUBLIC_TOKEN = request.body.public_token;
