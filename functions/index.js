@@ -36,15 +36,6 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use(
-  cors({
-    allowedHeaders: ["sessionId", "Content-Type"],
-    exposedHeaders: ["sessionId"],
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false
-  })
-);
 
 app.post("/get_access_token", (request, response, next) => {
   PUBLIC_TOKEN = request.body.public_token;
@@ -55,6 +46,7 @@ app.post("/get_access_token", (request, response, next) => {
       });
     }
     ACCESS_TOKEN = tokenResponse.access_token;
+    console.log(ACCESS_TOKEN);
     ITEM_ID = tokenResponse.item_id;
     response.json({
       access_token: ACCESS_TOKEN,
