@@ -7,22 +7,83 @@ import {
   FiDollarSign,
   FiShoppingBag
 } from "react-icons/fi";
-import "./home.css";
+import "./style.css";
+import { toast } from "react-toastify";
 import CentralCard from "../Navigation/centralCard";
-import cards from "../Navigation/cards.json";
+import cards from "../Navigation/cardData.json";
+import firebase from "firebase";
+import db from "../Configs/firebase";
+import { withRouter } from "react-router-dom";
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      user: props.user,
       isBig: false,
       fadeIn: false,
-      smallContainer: ""
+      smallContainer: "",
+      data: {},
+      toast: false
     };
     this.cardFunction = this.cardFunction.bind(this);
   }
 
-  cardFunction() {
+  componentDidMount = () => {
+    const user = firebase.auth().currentUser;
+    const uid = user.uid;
+    const docRef = db.collection("users").doc(uid);
+
+    docRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (!data.access_token && !data.dontSkip) {
+            this.handleToast();
+          }
+        } else {
+          docRef.set({
+            access_token: null,
+            metadata: null,
+            dontSkip: true
+          });
+          this.handleToast();
+        }
+      })
+      .catch(e => {});
+  };
+
+  handleToast = () => {
+    if (!toast.isActive("mainToast")) {
+      toast(
+        <div style={{ color: "black" }} onClick={this.redirect}>
+          You have not logged in with your bank. <br />{" "}
+          <strong>
+            Click to add{" "}
+            <span role="img" aria-label="bank">
+              🏦
+            </span>
+          </strong>
+        </div>,
+        {
+          toastId: "mainToast",
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        }
+      );
+    }
+  };
+
+  redirect = () => {
+    this.props.history.push("/plaidlink");
+  };
+
+  cardFunction = () => {
     if (this.state.isBig && this.state.fadeIn) {
       this.setState({
         fadeIn: false
@@ -38,7 +99,7 @@ class Home extends Component {
       isBig: !this.state.isBig,
       smallContainer: "smallContainer"
     });
-  }
+  };
 
   render() {
     return (
@@ -55,7 +116,7 @@ class Home extends Component {
                 {this.state.fadeIn && this.state.isBig ? (
                   <div className="fadeIn">
                     <h4>
-                      Current User: <br /> Need Data
+                      Current User: <br /> {this.state.user.displayName}
                     </h4>
                     <h4>
                       Spending Available: <br /> Need Data
@@ -97,4 +158,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);

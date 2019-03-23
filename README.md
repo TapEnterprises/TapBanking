@@ -47,15 +47,14 @@ This API has multiple endpoints
 
 ### `/get_access_token`
 
- **Required**
- 
+**Required**
+
 > {"public_token" : "example_public_token"}
 
 ### `/transactions`
 
- **Required**
- 
-> {"startDate" : "YYYY-MM-DD",
-   "endDate" : "YYYY-MM-DD",
-   "access_token" : "example_access_token"}
+**Required**
 
+> {"startDate" : "YYYY-MM-DD",
+> "endDate" : "YYYY-MM-DD",
+> "access_token" : "example_access_token"}
