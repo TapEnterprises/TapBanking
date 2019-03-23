@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import Login from "./components/Login/login";
+import Login from "./components/Login";
 import firebase from "firebase";
 
 firebase.auth().onAuthStateChanged(user => {

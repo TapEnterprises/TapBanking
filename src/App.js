@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./components/Home/home";
-import account from "./components/Account/account";
-import settings from "./components/Settings/settings";
-import transaction from "./components/Transaction/transaction";
-import budgets from "./components/Budget/budgets";
-import savings from "./components/Savings/savings";
-import Back from "./components/Navigation/back";
-import PlaidLink from "./components/PlaidLink/plaidlink";
+import Home from "./components/Home";
+import account from "./components/Account";
+import settings from "./components/Settings";
+import transaction from "./components/Transaction";
+import budgets from "./components/Budget";
+import savings from "./components/Savings";
+import Back from "./components/Navigation";
+import PlaidLink from "./components/PlaidLink";
 
 const App = props => {
   return (

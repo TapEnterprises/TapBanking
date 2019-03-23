@@ -1,7 +1,7 @@
 import React from "react";
 import { Snackbar } from "@material-ui/core";
 
-const Notification = props => {
+const NotificationItem = props => {
   return (
     <Snackbar
       message={props.message}
@@ -12,4 +12,4 @@ const Notification = props => {
   );
 };
 
-export default Notification;
+export default NotificationItem;

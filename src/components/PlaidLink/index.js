@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PlaidLink from "react-plaid-link";
 import axios from "axios";
-import db from "../configuration/firebase";
+import db from "../Configs/firebase";
 import firebase from "firebase";
-import "./plaidlinkStyle.css";
-import Notification from "../Common/notification";
+import "./style.css";
+import NotifcationItem from "../Common/NotifcationItem";
 import {
   Card,
   CardContent,
@@ -116,7 +116,7 @@ class Plaid extends Component {
               </Link>
             </div>
           </div>
-          <Notification
+          <NotifcationItem
             message={"You have successfuly connected with your bank."}
             hide={600}
             open={this.state.access_token ? true : false}
@@ -124,7 +124,7 @@ class Plaid extends Component {
             <Button onClick={this.redirect} color="secondary" size="small">
               Go to dashboard
             </Button>
-          </Notification>
+          </NotifcationItem>
         </Grid>
       </div>
     );
