@@ -29,6 +29,7 @@ const App = props => {
           </Switch>
         </Back>
       </Router>
+      <ToastContainer />
     </div>
   );
 };

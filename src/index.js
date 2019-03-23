@@ -5,6 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Login from "./components/Login";
 import firebase from "firebase";
+import "react-toastify/dist/ReactToastify.css";
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
