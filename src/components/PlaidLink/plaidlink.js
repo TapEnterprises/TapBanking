@@ -4,12 +4,14 @@ import axios from "axios";
 import db from "../Configuration/firebase";
 import firebase from "firebase";
 import "./plaidlinkStyle.css";
+import Notification from "../Common/notification";
 import {
   Card,
   CardContent,
   Grid,
   CardActions,
-  Avatar
+  Avatar,
+  Button
 } from "@material-ui/core";
 
 class Plaid extends Component {
@@ -19,9 +21,15 @@ class Plaid extends Component {
     const user = firebase.auth().currentUser;
     this.state = {
       access_token: null,
-      uid: user.uid
+      uid: user.uid,
+      metadata: null
     };
   }
+
+  redirect = () => {
+    this.props.history.push("/");
+  };
+
   handleOnSuccess(token, metadata) {
     axios
       .post(
@@ -30,7 +38,8 @@ class Plaid extends Component {
       )
       .then(res => {
         this.setState(() => ({
-          access_token: res.data.access_token
+          access_token: res.data.access_token,
+          metadata
         }));
       })
       .then(() => {
@@ -40,16 +49,18 @@ class Plaid extends Component {
           .then(doc => {
             if (doc.exists) {
               docRef.update({
-                access_token: this.state.access_token
+                access_token: this.state.access_token,
+                metadata: this.state.metadata
               });
             } else {
               docRef.set({
-                access_token: this.state.access_token
+                access_token: this.state.access_token,
+                metadata: this.state.metadata
               });
             }
           })
-          .then(() => {
-            window.location.reload();
+          .catch(error => {
+            console.log(error);
           });
       })
       .catch(error => {
@@ -61,7 +72,6 @@ class Plaid extends Component {
     //handle the case whn you user exits link
   }
   render() {
-    console.log(this.props.history);
     return (
       <div className="plaidLinkBackground">
         <Grid container justify="center">
@@ -85,6 +95,16 @@ class Plaid extends Component {
               </PlaidLink>
             </CardActions>
           </Card>
+          <Notification
+            message={"You have successfuly connected with your bank."}
+            hide={600}
+            open={this.state.access_token}
+          >
+            <Button onClick={this.redirect} color="secondary" size="small">
+              Go to dashboard
+            </Button>
+          </Notification>
+          ;
         </Grid>
       </div>
     );
