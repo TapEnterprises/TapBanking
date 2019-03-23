@@ -1,9 +1,18 @@
 import React from "react";
+import { Button } from "@material-ui/core";
+import firebase from "firebase";
 
 const Settings = () => {
   return (
     <div>
-      <h1>Settings</h1>
+      <Button
+        variant="contained"
+        color="secondary"
+        fullWidth
+        onClick={() => firebase.auth().signOut()}
+      >
+        Logout
+      </Button>
     </div>
   );
 };

@@ -11,7 +11,18 @@ const Back = props => {
 
   const location = props.location.pathname;
 
-  if (location !== "/") {
+  function locationWithoutBack() {
+    switch (location) {
+      case "/":
+        return true;
+      case "/plaidlink":
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  if (!locationWithoutBack()) {
     var indices = [];
     for (var i = 0; i < location.length; i++) {
       if (location[i] === "/") indices.push(i);
@@ -38,7 +49,7 @@ const Back = props => {
             </h3>
           </Toolbar>
         </AppBar>
-        <div style={{ paddingBottom: "50px" }} />
+        <div style={{ paddingTop: "3vh", paddingBottom: "50px" }} />
         {props.children}
       </div>
     );
