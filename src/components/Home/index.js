@@ -39,7 +39,7 @@ class Home extends Component {
       .then(doc => {
         if (doc.exists) {
           const data = doc.data();
-          if (!data.access_token && !data.dontSkip) {
+          if (!data.access_token && data.dontSkip) {
             this.handleToast();
           }
         } else {
@@ -118,7 +118,7 @@ class Home extends Component {
                   className="homeAvatar"
                   src={user.photoURL}
                 >
-                  {user.displayName.charAt(0)}
+                  {user.displayName ? user.displayName.charAt(0) : null}
                 </Avatar>
                 {this.state.fadeIn && this.state.isBig ? (
                   <div className="fadeIn">

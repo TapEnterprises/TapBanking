@@ -16,6 +16,8 @@ import { MdExpandMore } from "react-icons/md";
 import axois from "axios";
 import firebase from "firebase";
 import db from "../Configs/firebase";
+import { toast } from "react-toastify";
+import { withRouter } from "react-router-dom";
 
 class Account extends Component {
   constructor(props) {
@@ -38,6 +40,27 @@ class Account extends Component {
           const data = doc.data();
           if (data.access_token) {
             this.setState(() => ({ access_token: data.access_token }));
+          } else {
+            return toast(
+              <div style={{ color: "black" }} onClick={this.redirect}>
+                You have not logged in with your bank. <br />{" "}
+                <strong>
+                  Click to add{" "}
+                  <span role="img" aria-label="bank">
+                    🏦
+                  </span>
+                </strong>
+              </div>,
+              {
+                toastId: "mainToast",
+                position: "bottom-center",
+                autoClose: false,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+              }
+            );
           }
         }
       })
@@ -56,6 +79,10 @@ class Account extends Component {
             console.log(err);
           });
       });
+  };
+
+  redirect = () => {
+    this.props.history.push("/plaidlink");
   };
 
   render() {
@@ -135,4 +162,4 @@ class Account extends Component {
   }
 }
 
-export default Account;
+export default withRouter(Account);
