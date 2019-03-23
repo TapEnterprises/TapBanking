@@ -7,13 +7,13 @@ import {
   FiDollarSign,
   FiShoppingBag
 } from "react-icons/fi";
-import "./style.css";
+import "./home.css";
+import { toast } from "react-toastify";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
 import firebase from "firebase";
 import db from "../Configs/firebase";
 import { withRouter } from "react-router-dom";
-import NotifcationItem from "../Common/NotifcationItem";
 
 class Home extends Component {
   constructor(props) {
@@ -37,12 +37,8 @@ class Home extends Component {
     docRef.get().then(doc => {
       if (doc.exists) {
         const data = doc.data();
-        if (data.access_token) {
-          this.handleToast(false);
-        } else {
-          if (data.dontSkip) {
-            this.handleToast(true);
-          }
+        if (!data.access_token && !data.dontSkip) {
+          this.handleToast();
         }
       } else {
         docRef.set({
@@ -50,14 +46,28 @@ class Home extends Component {
           metadata: null,
           dontSkip: true
         });
-        this.handleToast(true);
+        this.handleToast();
       }
     });
   };
 
-  handleToast = redirect => {
-    if (redirect) {
-      this.setState(() => ({ toast: redirect }));
+  handleToast = () => {
+    if (!toast.isActive("mainToast")) {
+      toast(
+        <div style={{ color: "black" }} onClick={this.redirect}>
+          You have not logged in with your bank. <br />{" "}
+          <strong>Click to add 🏦</strong>
+        </div>,
+        {
+          toastId: "mainToast",
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        }
+      );
     }
   };
 
@@ -88,17 +98,6 @@ class Home extends Component {
       <div>
         <div className="background">
           <Grid justify="center" container>
-            <NotifcationItem
-              message={
-                "You have not logged in with your bank. Would you like to? "
-              }
-              open={this.state.toast}
-              hide={1000}
-            >
-              <Button onClick={this.redirect} color="secondary" size="small">
-                Connect to bank
-              </Button>
-            </NotifcationItem>
             <Card onClick={this.cardFunction}>
               <CardContent
                 className={

@@ -5,15 +5,14 @@ import axios from "axios";
 import db from "../Configs/firebase";
 import firebase from "firebase";
 import "./style.css";
-import NotifcationItem from "../Common/NotifcationItem";
 import {
   Card,
   CardContent,
   Grid,
   CardActions,
-  Avatar,
-  Button
+  Avatar
 } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 
 class Plaid extends Component {
   constructor(props) {
@@ -59,6 +58,9 @@ class Plaid extends Component {
                 metadata: this.state.metadata
               });
             }
+          })
+          .then(() => {
+            this.props.history.push("/");
           })
           .catch(error => {
             console.log(error);
@@ -116,19 +118,10 @@ class Plaid extends Component {
               </Link>
             </div>
           </div>
-          <NotifcationItem
-            message={"You have successfuly connected with your bank."}
-            hide={600}
-            open={this.state.access_token ? true : false}
-          >
-            <Button onClick={this.redirect} color="secondary" size="small">
-              Go to dashboard
-            </Button>
-          </NotifcationItem>
         </Grid>
       </div>
     );
   }
 }
 
-export default Plaid;
+export default withRouter(Plaid);
