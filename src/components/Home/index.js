@@ -102,6 +102,7 @@ class Home extends Component {
   };
 
   render() {
+    const { user } = this.state;
     return (
       <div>
         <div className="background">
@@ -112,11 +113,17 @@ class Home extends Component {
                   this.state.isBig ? "bigContainer" : this.state.smallContainer
                 }
               >
-                <Avatar style={{ height: "100px", width: "100px" }} />
+                <Avatar
+                  style={{ height: 100, width: 100, fontSize: 35 }}
+                  className="homeAvatar"
+                  src={user.photoURL}
+                >
+                  {user.displayName.charAt(0)}
+                </Avatar>
                 {this.state.fadeIn && this.state.isBig ? (
                   <div className="fadeIn">
                     <h4>
-                      Current User: <br /> {this.state.user.displayName}
+                      Current User: <br /> {user.displayName}
                     </h4>
                     <h4>
                       Spending Available: <br /> Need Data

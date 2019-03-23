@@ -1,12 +1,12 @@
 .loginBackground {
   text-align: center;
   margin-top: -3vh;
-  height: 100vh;
+  height: 120vh;
   width: 100vw;
   background-image: linear-gradient(to right, #6f48e8, #3c90e8);
 }
 
-h1 {
+.login h1 {
   color: #ffffff;
   text-align: center;
   padding: 2em;
