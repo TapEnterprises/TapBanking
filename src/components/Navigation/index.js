@@ -11,7 +11,7 @@ const Back = props => {
 
   const location = props.location.pathname;
 
-  function locationWithoutBack() {
+  const locationWithoutBack = () => {
     switch (location) {
       case "/":
         return true;
@@ -20,7 +20,7 @@ const Back = props => {
       default:
         return false;
     }
-  }
+  };
 
   if (!locationWithoutBack()) {
     var indices = [];
@@ -38,9 +38,9 @@ const Back = props => {
           }}
         >
           <Toolbar>
-            <IconButton className="float-left">
+            <IconButton onClick={goback} className="float-left">
               <IconContext.Provider value={{ color: "white" }}>
-                <FiChevronLeft onClick={goback} />
+                <FiChevronLeft />
               </IconContext.Provider>
             </IconButton>
             <h3 className="float-right">
