@@ -34,21 +34,24 @@ class Home extends Component {
     const uid = user.uid;
     const docRef = db.collection("users").doc(uid);
 
-    docRef.get().then(doc => {
-      if (doc.exists) {
-        const data = doc.data();
-        if (!data.access_token && !data.dontSkip) {
+    docRef
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (!data.access_token && !data.dontSkip) {
+            this.handleToast();
+          }
+        } else {
+          docRef.set({
+            access_token: null,
+            metadata: null,
+            dontSkip: true
+          });
           this.handleToast();
         }
-      } else {
-        docRef.set({
-          access_token: null,
-          metadata: null,
-          dontSkip: true
-        });
-        this.handleToast();
-      }
-    });
+      })
+      .catch(e => {});
   };
 
   handleToast = () => {
