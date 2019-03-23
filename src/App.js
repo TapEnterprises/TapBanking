@@ -8,6 +8,7 @@ import Budgets from "./components/Budget";
 import Savings from "./components/Savings";
 import Back from "./components/Navigation";
 import PlaidLink from "./components/PlaidLink";
+import { ToastContainer } from "react-toastify";
 
 const App = props => {
   return (

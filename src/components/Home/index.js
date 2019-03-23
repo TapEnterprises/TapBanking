@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Avatar, Card, CardContent, Grid, Button } from "@material-ui/core";
+import { Avatar, Card, CardContent, Grid } from "@material-ui/core";
 import {
   FiShoppingCart,
   FiSettings,
@@ -7,7 +7,7 @@ import {
   FiDollarSign,
   FiShoppingBag
 } from "react-icons/fi";
-import "./home.css";
+import "./style.css";
 import { toast } from "react-toastify";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
@@ -56,7 +56,12 @@ class Home extends Component {
       toast(
         <div style={{ color: "black" }} onClick={this.redirect}>
           You have not logged in with your bank. <br />{" "}
-          <strong>Click to add 🏦</strong>
+          <strong>
+            Click to add{" "}
+            <span role="img" aria-label="bank">
+              🏦
+            </span>
+          </strong>
         </div>,
         {
           toastId: "mainToast",
