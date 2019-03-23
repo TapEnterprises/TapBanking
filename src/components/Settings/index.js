@@ -1,20 +1,20 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import firebase from "firebase";
+import { withRouter } from "react-router-dom";
 
-const Settings = () => {
+const Settings = props => {
+  const signOut = () => {
+    props.history.push("/");
+    firebase.auth().signOut();
+  };
   return (
     <div>
-      <Button
-        variant="contained"
-        color="secondary"
-        fullWidth
-        onClick={() => firebase.auth().signOut()}
-      >
+      <Button variant="contained" color="secondary" fullWidth onClick={signOut}>
         Logout
       </Button>
     </div>
   );
 };
 
-export default Settings;
+export default withRouter(Settings);
