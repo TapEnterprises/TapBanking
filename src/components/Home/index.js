@@ -7,13 +7,13 @@ import {
   FiDollarSign,
   FiShoppingBag
 } from "react-icons/fi";
-import "./home.css";
+import "./style.css";
 import CentralCard from "../Navigation/centralCard";
-import cards from "../Navigation/cards.json";
+import cards from "../Navigation/cardData.json";
 import firebase from "firebase";
-import db from "../configuration/firebase";
+import db from "../Configs/firebase";
 import { withRouter } from "react-router-dom";
-import Notification from "../Common/notification";
+import NotifcationItem from "../Common/NotifcationItem";
 
 class Home extends Component {
   constructor(props) {
@@ -88,7 +88,7 @@ class Home extends Component {
       <div>
         <div className="background">
           <Grid justify="center" container>
-            <Notification
+            <NotifcationItem
               message={
                 "You have not logged in with your bank. Would you like to? "
               }
@@ -98,7 +98,7 @@ class Home extends Component {
               <Button onClick={this.redirect} color="secondary" size="small">
                 Connect to bank
               </Button>
-            </Notification>
+            </NotifcationItem>
             <Card onClick={this.cardFunction}>
               <CardContent
                 className={

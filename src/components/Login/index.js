@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TextField, FormControl, Button } from "@material-ui/core";
 import firebase from "firebase";
-import "./login.css";
+import "./style.css";
 
 class Login extends Component {
   constructor() {
