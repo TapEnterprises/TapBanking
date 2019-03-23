@@ -11,14 +11,15 @@ import "./home.css";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cards.json";
 import firebase from "firebase";
-import db from "../Configuration/firebase";
+import db from "../configuration/firebase";
 import { withRouter } from "react-router-dom";
 import Notification from "../Common/notification";
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      user: props.user,
       isBig: false,
       fadeIn: false,
       smallContainer: "",
@@ -39,13 +40,17 @@ class Home extends Component {
         if (data.access_token) {
           this.handleToast(false);
         } else {
-          this.handleToast(true);
+          if (data.dontSkip) {
+            this.handleToast(true);
+          }
         }
       } else {
         docRef.set({
           access_token: null,
-          metadata: null
+          metadata: null,
+          dontSkip: true
         });
+        this.handleToast(true);
       }
     });
   };
@@ -88,7 +93,7 @@ class Home extends Component {
                 "You have not logged in with your bank. Would you like to? "
               }
               open={this.state.toast}
-              hide={600}
+              hide={1000}
             >
               <Button onClick={this.redirect} color="secondary" size="small">
                 Connect to bank
@@ -104,7 +109,7 @@ class Home extends Component {
                 {this.state.fadeIn && this.state.isBig ? (
                   <div className="fadeIn">
                     <h4>
-                      Current User: <br /> Need Data
+                      Current User: <br /> {this.state.user.displayName}
                     </h4>
                     <h4>
                       Spending Available: <br /> Need Data

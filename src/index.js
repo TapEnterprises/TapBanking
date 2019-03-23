@@ -8,7 +8,7 @@ import firebase from "firebase";
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    ReactDOM.render(<App />, document.getElementById("root"));
+    ReactDOM.render(<App user={user} />, document.getElementById("root"));
   } else {
     ReactDOM.render(<Login />, document.getElementById("root"));
   }

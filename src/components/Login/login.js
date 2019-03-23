@@ -104,14 +104,11 @@ class Login extends Component {
               {this.state.loggingIn ? (
                 <div>
                   <br />
-                  <a href="#" className="loginHref">
-                    Forgot Password?
-                  </a>
+                  <div className="loginHref">Forgot Password?</div>
                 </div>
               ) : null}
               <br />
-              <a
-                href="#"
+              <div
                 onClick={() =>
                   this.setState({ loggingIn: !this.state.loggingIn })
                 }
@@ -120,7 +117,7 @@ class Login extends Component {
                 {this.state.loggingIn
                   ? "Need to register?"
                   : "Already have an account?"}
-              </a>
+              </div>
             </FormControl>
           </div>
         </div>

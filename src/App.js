@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import home from "./components/Home/home";
+import Home from "./components/Home/home";
 import account from "./components/Account/account";
 import settings from "./components/Settings/settings";
 import transaction from "./components/Transaction/transaction";
@@ -9,13 +9,17 @@ import savings from "./components/Savings/savings";
 import Back from "./components/Navigation/back";
 import PlaidLink from "./components/PlaidLink/plaidlink";
 
-const App = () => {
+const App = props => {
   return (
     <div className="App">
       <Router>
         <Back>
           <Switch>
-            <Route path="/" exact component={home} />
+            <Route
+              path="/"
+              exact
+              component={() => <Home user={props.user} />}
+            />
             <Route path="/settings" component={settings} />
             <Route path="/account" component={account} />
             <Route path="/transaction" component={transaction} />
