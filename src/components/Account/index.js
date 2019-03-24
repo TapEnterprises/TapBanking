@@ -85,6 +85,10 @@ class Account extends Component {
     this.props.history.push("/plaidlink");
   };
 
+  numberWithCommas = x => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   render() {
     const user = this.props.user;
 
@@ -122,6 +126,7 @@ class Account extends Component {
           </Grid>
           {this.state.identity ? (
             this.state.identity.accounts.map(account => {
+              console.log(account);
               return (
                 <Grid key={account.account_id} item xs={12}>
                   <Card>
@@ -131,20 +136,63 @@ class Account extends Component {
                       <Typography variant="caption">
                         {account.official_name}
                       </Typography>
-                      <div style={{ paddingTop: "25px" }}>
+                      <div
+                        style={{
+                          paddingTop: "25px",
+                          display: "flex",
+                          flexDirection: "column"
+                        }}
+                      >
+                        <Chip
+                          color="default"
+                          label={
+                            "Available: " +
+                            (account.balances.available
+                              ? `$${this.numberWithCommas(
+                                  account.balances.available.toFixed(2)
+                                )}`
+                              : "$0.00")
+                          }
+                        />
+                        <br />
                         <Chip
                           color="primary"
-                          label={`Current Balance $${account.balances.current}`}
+                          label={`Total: $${this.numberWithCommas(
+                            account.balances.current.toFixed(2)
+                          )}`}
                         />
-                        <Chip color="secondary" label={account.subtype} />
+                        <br />
+                        <Chip
+                          color="secondary"
+                          label={account.subtype.toUpperCase()}
+                        />
                       </div>
                     </CardContent>
                     <ExpansionPanel>
                       <ExpansionPanelSummary expandIcon={<MdExpandMore />}>
                         More Information
                       </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <h1>More Information</h1>
+                      <ExpansionPanelDetails
+                        style={{ display: "flex", flexDirection: "column" }}
+                      >
+                        <div>
+                          <div style={{ fontWeight: "bold" }}>Account Id:</div>{" "}
+                          {account.account_id}
+                        </div>
+                        <br />
+                        <div>
+                          <div style={{ fontWeight: "bold" }}>
+                            Type of Account:
+                          </div>{" "}
+                          {account.type.toUpperCase()}
+                        </div>
+                        <br />
+                        <div>
+                          <div style={{ fontWeight: "bold" }}>
+                            Currency Type:
+                          </div>{" "}
+                          {account.balances.iso_currency_code}
+                        </div>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                   </Card>
