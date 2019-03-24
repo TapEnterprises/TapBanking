@@ -126,7 +126,6 @@ class Account extends Component {
           </Grid>
           {this.state.identity ? (
             this.state.identity.accounts.map(account => {
-              console.log(account);
               return (
                 <Grid key={account.account_id} item xs={12}>
                   <Card>
@@ -175,11 +174,6 @@ class Account extends Component {
                       <ExpansionPanelDetails
                         style={{ display: "flex", flexDirection: "column" }}
                       >
-                        <div>
-                          <div style={{ fontWeight: "bold" }}>Account Id:</div>{" "}
-                          {account.account_id}
-                        </div>
-                        <br />
                         <div>
                           <div style={{ fontWeight: "bold" }}>
                             Type of Account:
