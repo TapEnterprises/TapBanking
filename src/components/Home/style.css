@@ -36,6 +36,13 @@ h4 {
   margin-left: 10vw;
 }
 
+.homeAvatar {
+  height: "100px";
+  width: "100px";
+  background-image: linear-gradient(to right, #787878, #707070);
+  font-size: "35px";
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

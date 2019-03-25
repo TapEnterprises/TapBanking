@@ -35,7 +35,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <div className="loginBackground">
+        <div className="loginBackground login">
           <h1>Tap Banking</h1>
           <div
             style={{
