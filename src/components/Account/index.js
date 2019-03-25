@@ -41,7 +41,7 @@ class Account extends Component {
           if (data.access_token) {
             this.setState(() => ({ access_token: data.access_token }));
           } else {
-            return toast(
+            toast(
               <div style={{ color: "black" }} onClick={this.redirect}>
                 You have not logged in with your bank. <br />{" "}
                 <strong>
