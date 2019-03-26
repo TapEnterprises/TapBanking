@@ -42,7 +42,7 @@ class Transaction extends Component {
   }
 
   componentDidMount = () => {
-    const user = firebase.auth().currentUser;
+    const user = this.props.user;
     const uid = user.uid;
     const docRef = db.collection("users").doc(uid);
 
