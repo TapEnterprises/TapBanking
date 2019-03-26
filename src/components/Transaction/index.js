@@ -199,16 +199,7 @@ class Transaction extends Component {
       <Grid>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<MdExpandMore />}>
-            <Typography>
-              Category :{" "}
-              {this.state.categoryFilter === ""
-                ? "None"
-                : this.state.categoryFilter}{" "}
-              Account :{" "}
-              {this.state.accountFilter.name === ""
-                ? "None"
-                : this.state.accountFilter.name}
-            </Typography>
+            <Typography>Filters</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Grid container style={{ paddingTop: 5 }}>
