@@ -1,19 +1,47 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Icon,
+  Divider
+} from "@material-ui/core";
 import firebase from "firebase";
 import { withRouter } from "react-router-dom";
+import { FiLogOut, FiBell } from "react-icons/fi";
 
 const Settings = props => {
   const signOut = () => {
     props.history.push("/");
     firebase.auth().signOut();
   };
+
+  const notification = () => {
+    props.history.push("/notification");
+  };
+
   return (
-    <div>
-      <Button variant="contained" color="secondary" fullWidth onClick={signOut}>
-        Logout
-      </Button>
-    </div>
+    <List>
+      <ListItem onClick={notification}>
+        <ListItemIcon>
+          <Icon>
+            <FiBell />
+          </Icon>
+        </ListItemIcon>
+        <ListItemText>Notifications</ListItemText>
+      </ListItem>
+      <Divider />
+      <ListItem onClick={signOut}>
+        <ListItemIcon>
+          <Icon>
+            <FiLogOut />
+          </Icon>
+        </ListItemIcon>
+        <ListItemText>Logout</ListItemText>
+      </ListItem>
+      <Divider />
+    </List>
   );
 };
 
