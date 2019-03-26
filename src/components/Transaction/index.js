@@ -10,8 +10,10 @@ import {
   Typography,
   ExpansionPanelDetails,
   Chip,
-  ListSubheader
+  ListSubheader,
+  IconButton
 } from "@material-ui/core";
+import { MdExpandMore, MdClose } from "react-icons/md";
 import "./style.css";
 import axois from "axios";
 import firebase from "firebase";
@@ -26,7 +28,9 @@ class Transaction extends Component {
     this.state = {
       access_token: null,
       identity: null,
-      transactions: []
+      transactions: [],
+      categoryFilter: "",
+      categories: []
     };
 
     this.currentDate = new Date();
@@ -83,7 +87,18 @@ class Transaction extends Component {
             }
           )
           .then(res => {
-            this.setState({ transactions: res.data.transactions.transactions });
+            let categories = [];
+            let { transactions } = res.data.transactions;
+
+            transactions.map(trans => {
+              trans.category.map(cat => {
+                if (!categories.includes(cat)) {
+                  categories.push(cat);
+                }
+              });
+            });
+
+            this.setState({ transactions, categories });
           })
           .catch(err => {
             console.log(err);
@@ -121,11 +136,20 @@ class Transaction extends Component {
           )
           .then(res => {
             this.setState(state => {
-              let newTransactions = state.transactions;
-              newTransactions.push(...res.data.transactions.transactions);
+              let { transactions } = state;
+              transactions.push(...res.data.transactions.transactions);
+              let { categories } = state;
+
+              transactions.map(trans => {
+                trans.category.map(cat => {
+                  if (!categories.includes(cat)) {
+                    categories.push(cat);
+                  }
+                });
+              });
 
               return {
-                transactions: newTransactions,
+                transactions,
                 paginating: false
               };
             });
@@ -150,70 +174,125 @@ class Transaction extends Component {
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   };
 
+  filterCategory = transaction => {
+    if (this.state.categoryFilter !== "") {
+      return transaction.category.includes(this.state.categoryFilter);
+    } else {
+      return true;
+    }
+  };
+
   render() {
+    let lastDate = "";
     return (
       <Grid>
-        <List onScroll={this.paginate}>
-          {this.state.transactions.map((transaction, index, transactions) => (
-            <div key={transaction.transaction_id}>
-              {(index === 0 ||
-                transaction.date !== transactions[index - 1].date) && (
-                <ListSubheader>{transaction.date}</ListSubheader>
-              )}
-              <ListItem>
-                <ExpansionPanel style={{ flex: 1 }}>
-                  <ExpansionPanelSummary style={{ padding: "0 0 0 15px" }}>
-                    <Typography variant="overline" style={{ flex: 1 }}>
-                      {transaction.name}
-                    </Typography>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<MdExpandMore />}>
+            <Typography>
+              Filter by :{" "}
+              {this.state.categoryFilter === ""
+                ? "None"
+                : this.state.categoryFilter}
+            </Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Grid item container style={{ paddingTop: 5 }}>
+              <Grid item style={{ padding: 3 }}>
+                <Chip
+                  label="None"
+                  onClick={() => {
+                    this.setState({ categoryFilter: "" });
+                  }}
+                  color={this.state.categoryFilter === "" ? "primary" : ""}
+                />
+              </Grid>
+              {this.state.categories.map(item => (
+                <Grid item style={{ padding: 3 }} key={item.index + item}>
+                  <Chip
+                    label={item}
+                    onClick={() => {
+                      this.setState({ categoryFilter: item });
+                    }}
+                    color={this.state.categoryFilter === item ? "primary" : ""}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <List>
+          {this.state.transactions.map((transaction, index, transactions) => {
+            if (this.filterCategory(transaction)) {
+              const component = (
+                <div key={transaction.transaction_id}>
+                  {(lastDate === "" || lastDate !== transaction.date) && (
+                    <ListSubheader>{transaction.date}</ListSubheader>
+                  )}
+                  <ListItem>
+                    <ExpansionPanel style={{ flex: 1 }}>
+                      <ExpansionPanelSummary style={{ padding: "0 0 0 15px" }}>
+                        <Typography variant="overline" style={{ flex: 1 }}>
+                          {transaction.name}
+                        </Typography>
 
-                    <Typography
-                      variant="subheading"
-                      style={{
-                        color: transaction.amount > 0 ? "red" : "green"
-                      }}
-                    >
-                      {`${this.formatAmount(
-                        -transaction.amount,
-                        transaction.iso_currency_code
-                      )}`}
-                    </Typography>
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <Grid container direction={"column"}>
-                      <Grid item container>
-                        <Grid item>
-                          <ListItemText
-                            primary="Currency"
-                            secondary={transaction.iso_currency_code}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <ListItemText
-                            primary="Status"
-                            secondary={
-                              transaction.pending ? "Pending" : "Completed"
-                            }
-                          />
-                        </Grid>
-                      </Grid>
-                      <Grid item container style={{ paddingTop: 5 }}>
-                        {transaction.category.map(item => (
-                          <Grid
-                            item
-                            style={{ paddingRight: 3 }}
-                            key={item.index + item}
-                          >
-                            <Chip label={item} />
+                        <Typography
+                          variant="subheading"
+                          style={{
+                            color: transaction.amount > 0 ? "red" : "green"
+                          }}
+                        >
+                          {`${this.formatAmount(
+                            -transaction.amount,
+                            transaction.iso_currency_code
+                          )}`}
+                        </Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <Grid container direction={"column"}>
+                          <Grid item container>
+                            <Grid item>
+                              <ListItemText
+                                primary="Currency"
+                                secondary={transaction.iso_currency_code}
+                              />
+                            </Grid>
+                            <Grid item>
+                              <ListItemText
+                                primary="Status"
+                                secondary={
+                                  transaction.pending ? "Pending" : "Completed"
+                                }
+                              />
+                            </Grid>
                           </Grid>
-                        ))}
-                      </Grid>
-                    </Grid>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              </ListItem>
-            </div>
-          ))}
+                          <Grid item container style={{ paddingTop: 5 }}>
+                            {transaction.category.map(item => (
+                              <Grid
+                                item
+                                style={{ paddingRight: 3 }}
+                                key={item.index + item}
+                              >
+                                <Chip
+                                  label={item}
+                                  onClick={() => {
+                                    this.setState({ categoryFilter: item });
+                                  }}
+                                />
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </Grid>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  </ListItem>
+                </div>
+              );
+
+              lastDate = transaction.date;
+
+              return component;
+            }
+          })}
         </List>
         {(this.state.transactions.length === 0 || this.state.paginating) && (
           <Grid style={{ textAlign: "center" }} item xs={12}>
