@@ -102,7 +102,7 @@ class Transaction extends Component {
     var numberWithCommas = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     var indexOfMinus = numberWithCommas.indexOf("-");
 
-    return this.insert(numberWithCommas, "$", indexOfMinus + 1);
+    return this.insert(numberWithCommas, " $", indexOfMinus + 1);
   };
 
   render() {
