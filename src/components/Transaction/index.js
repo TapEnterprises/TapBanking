@@ -87,8 +87,22 @@ class Transaction extends Component {
     this.props.history.push("/plaidlink");
   };
 
+  insert = (string, insertion, index) => {
+    if (index > 0)
+      return (
+        string.substring(0, index) +
+        insertion +
+        string.substring(index, string.length)
+      );
+
+    return insertion + string;
+  };
+
   numberWithCommas = x => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    var numberWithCommas = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    var indexOfMinus = numberWithCommas.indexOf("-");
+
+    return this.insert(numberWithCommas, "$", indexOfMinus + 1);
   };
 
   render() {
@@ -135,9 +149,11 @@ class Transaction extends Component {
                               </Grid>
                               <Grid item>
                                 <ListItemText
-                                  primary="Pending"
+                                  primary="Status"
                                   secondary={
-                                    transaction.pending ? "Yes" : "Completed"
+                                    transaction.pending
+                                      ? "Pending"
+                                      : "Completed"
                                   }
                                 />
                               </Grid>
