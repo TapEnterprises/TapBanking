@@ -5,7 +5,11 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  Typography,
+  ExpansionPanelDetails,
+  Chip
 } from "@material-ui/core";
 import "./style.css";
 import axois from "axios";
@@ -83,26 +87,69 @@ class Transaction extends Component {
   };
 
   numberWithCommas = x => {
+    const y = Math.abs(x);
+    return y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  PosnumberWithCommas = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   render() {
+    console.log(this.state.transactionsData);
     return (
       <div>
         <Grid>
           {this.state.transactionsData ? (
             <List>
               {this.state.transactionsData.transactions.map(transaction => (
-                <div key={transaction.transaction_id}>
-                  <ListItem button>
-                    <ListItemText
-                      primary={`${transaction.amount}${
-                        transaction.iso_currency_code
-                      } to ${transaction.name}`}
-                    />
-                  </ListItem>
-                  <Divider />
-                </div>
+                <ExpansionPanel key={transaction.transaction_id}>
+                  <ExpansionPanelSummary style={{ padding: "0 0 0 15px" }}>
+                    <Typography variant="overline" style={{ flexBasis: "95%" }}>
+                      {transaction.name}
+                    </Typography>
+
+                    {transaction.amount > 0 ? (
+                      <Typography variant="subheading">
+                        {transaction.amount
+                          ? `-$${this.PosnumberWithCommas(
+                              transaction.amount.toFixed(2)
+                            )}`
+                          : "$0.00"}
+                      </Typography>
+                    ) : (
+                      <Typography
+                        style={{ color: "green" }}
+                        variant="subheading"
+                      >
+                        {transaction.amount
+                          ? `+$${this.numberWithCommas(
+                              transaction.amount.toFixed(2)
+                            )}`
+                          : "$0.00"}
+                      </Typography>
+                    )}
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <List>
+                      <ListItem>
+                        <ListItemText
+                          primary="Date"
+                          secondary={transaction.date}
+                        />
+                        <ListItemText
+                          primary="Pending"
+                          secondary={transaction.pending ? "Yes" : "No"}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        {transaction.category.map(item => {
+                          return <Chip key={item.index + item} label={item} />;
+                        })}
+                      </ListItem>
+                    </List>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
               ))}
             </List>
           ) : (
