@@ -30,7 +30,12 @@ class Transaction extends Component {
       identity: null,
       transactions: [],
       categoryFilter: "",
-      categories: []
+      categories: [],
+      accounts: [],
+      accountFilter: {
+        name: "",
+        account_id: ""
+      }
     };
 
     this.currentDate = new Date();
@@ -88,7 +93,7 @@ class Transaction extends Component {
           )
           .then(res => {
             let categories = [];
-            let { transactions } = res.data.transactions;
+            let { transactions, accounts } = res.data.transactions;
 
             transactions.map(trans => {
               trans.category.map(cat => {
@@ -98,7 +103,7 @@ class Transaction extends Component {
               });
             });
 
-            this.setState({ transactions, categories });
+            this.setState({ transactions, categories, accounts });
           })
           .catch(err => {
             console.log(err);
@@ -175,11 +180,17 @@ class Transaction extends Component {
   };
 
   filterCategory = transaction => {
+    let filterBool = true;
     if (this.state.categoryFilter !== "") {
-      return transaction.category.includes(this.state.categoryFilter);
-    } else {
-      return true;
+      filterBool = transaction.category.includes(this.state.categoryFilter);
     }
+
+    if (this.state.accountFilter.account_id !== "" && filterBool) {
+      filterBool =
+        this.state.accountFilter.account_id === transaction.account_id;
+    }
+
+    return filterBool;
   };
 
   render() {
@@ -189,21 +200,30 @@ class Transaction extends Component {
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<MdExpandMore />}>
             <Typography>
-              Filter by :{" "}
+              Category :{" "}
               {this.state.categoryFilter === ""
                 ? "None"
-                : this.state.categoryFilter}
+                : this.state.categoryFilter}{" "}
+              Account :{" "}
+              {this.state.accountFilter.name === ""
+                ? "None"
+                : this.state.accountFilter.name}
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Grid item container style={{ paddingTop: 5 }}>
+            <Grid container style={{ paddingTop: 5 }}>
+              <Grid container item direction="column">
+                <Typography>Categories:</Typography>
+              </Grid>
               <Grid item style={{ padding: 3 }}>
                 <Chip
                   label="None"
                   onClick={() => {
                     this.setState({ categoryFilter: "" });
                   }}
-                  color={this.state.categoryFilter === "" ? "primary" : ""}
+                  color={
+                    this.state.categoryFilter === "" ? "primary" : "default"
+                  }
                 />
               </Grid>
               {this.state.categories.map(item => (
@@ -213,7 +233,40 @@ class Transaction extends Component {
                     onClick={() => {
                       this.setState({ categoryFilter: item });
                     }}
-                    color={this.state.categoryFilter === item ? "primary" : ""}
+                    color={
+                      this.state.categoryFilter === item ? "primary" : "default"
+                    }
+                  />
+                </Grid>
+              ))}
+              <Grid container item direction="column">
+                <Typography>Account:</Typography>
+              </Grid>
+              <Grid item style={{ padding: 3 }}>
+                <Chip
+                  label="None"
+                  onClick={() => {
+                    this.setState({ accountFilter: { name: "", id: "" } });
+                  }}
+                  color={
+                    this.state.accountFilter.name === ""
+                      ? "secondary"
+                      : "default"
+                  }
+                />
+              </Grid>
+              {this.state.accounts.map(({ name, account_id }) => (
+                <Grid item style={{ padding: 3 }} key={account_id}>
+                  <Chip
+                    label={name}
+                    onClick={() => {
+                      this.setState({ accountFilter: { name, account_id } });
+                    }}
+                    color={
+                      this.state.accountFilter.name === name
+                        ? "secondary"
+                        : "default"
+                    }
                   />
                 </Grid>
               ))}
