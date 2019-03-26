@@ -9,7 +9,8 @@ import {
   ExpansionPanelSummary,
   Typography,
   ExpansionPanelDetails,
-  Chip
+  Chip,
+  ListSubheader
 } from "@material-ui/core";
 import "./style.css";
 import axois from "axios";
@@ -87,70 +88,78 @@ class Transaction extends Component {
   };
 
   numberWithCommas = x => {
-    const y = Math.abs(x);
-    return y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  PosnumberWithCommas = x => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   render() {
-    console.log(this.state.transactionsData);
     return (
       <div>
         <Grid>
           {this.state.transactionsData ? (
             <List>
-              {this.state.transactionsData.transactions.map(transaction => (
-                <ExpansionPanel key={transaction.transaction_id}>
-                  <ExpansionPanelSummary style={{ padding: "0 0 0 15px" }}>
-                    <Typography variant="overline" style={{ flexBasis: "95%" }}>
-                      {transaction.name}
-                    </Typography>
-
-                    {transaction.amount > 0 ? (
-                      <Typography variant="subheading">
-                        {transaction.amount
-                          ? `-$${this.PosnumberWithCommas(
-                              transaction.amount.toFixed(2)
-                            )}`
-                          : "$0.00"}
-                      </Typography>
-                    ) : (
-                      <Typography
-                        style={{ color: "green" }}
-                        variant="subheading"
-                      >
-                        {transaction.amount
-                          ? `+$${this.numberWithCommas(
-                              transaction.amount.toFixed(2)
-                            )}`
-                          : "$0.00"}
-                      </Typography>
+              {this.state.transactionsData.transactions.map(
+                (transaction, index, transactions) => (
+                  <div key={transaction.transaction_id}>
+                    {(index === 0 ||
+                      transaction.date !== transactions[index - 1].date) && (
+                      <ListSubheader>{transaction.date}</ListSubheader>
                     )}
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <List>
-                      <ListItem>
-                        <ListItemText
-                          primary="Date"
-                          secondary={transaction.date}
-                        />
-                        <ListItemText
-                          primary="Pending"
-                          secondary={transaction.pending ? "Yes" : "No"}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        {transaction.category.map(item => {
-                          return <Chip key={item.index + item} label={item} />;
-                        })}
-                      </ListItem>
-                    </List>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              ))}
+                    <ListItem>
+                      <ExpansionPanel style={{ flex: 1 }}>
+                        <ExpansionPanelSummary
+                          style={{ padding: "0 0 0 15px" }}
+                        >
+                          <Typography variant="overline" style={{ flex: 1 }}>
+                            {transaction.name}
+                          </Typography>
+
+                          <Typography
+                            variant="subheading"
+                            style={{
+                              color: transaction.amount > 0 ? "red" : "green"
+                            }}
+                          >
+                            {`${this.numberWithCommas(
+                              (-transaction.amount).toFixed(2)
+                            )}`}
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <Grid container direction={"column"}>
+                            <Grid item container>
+                              <Grid item>
+                                <ListItemText
+                                  primary="Currency"
+                                  secondary={transaction.iso_currency_code}
+                                />
+                              </Grid>
+                              <Grid item>
+                                <ListItemText
+                                  primary="Pending"
+                                  secondary={
+                                    transaction.pending ? "Yes" : "Completed"
+                                  }
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid item container style={{ paddingTop: 5 }}>
+                              {transaction.category.map(item => (
+                                <Grid
+                                  item
+                                  style={{ paddingRight: 3 }}
+                                  key={item.index + item}
+                                >
+                                  <Chip label={item} />
+                                </Grid>
+                              ))}
+                            </Grid>
+                          </Grid>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                    </ListItem>
+                  </div>
+                )
+              )}
             </List>
           ) : (
             <Grid style={{ textAlign: "center" }} item xs={12}>
