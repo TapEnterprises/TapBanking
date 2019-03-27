@@ -19,6 +19,7 @@ import db from "../Configs/firebase";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
+import { connect } from "react-redux";
 
 class Transaction extends Component {
   constructor(props) {
@@ -352,4 +353,6 @@ class Transaction extends Component {
   }
 }
 
-export default withRouter(Transaction);
+const mapStateToProps = ({ user }) => ({ user });
+
+export default withRouter(connect(mapStateToProps)(Transaction));

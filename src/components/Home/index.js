@@ -11,15 +11,14 @@ import "./style.css";
 import { toast } from "react-toastify";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
-import firebase from "firebase";
 import db from "../Configs/firebase";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: props.user,
       isBig: false,
       fadeIn: false,
       smallContainer: "",
@@ -30,7 +29,7 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    const user = firebase.auth().currentUser;
+    const user = this.props.user;
     const uid = user.uid;
     const docRef = db.collection("users").doc(uid);
 
@@ -102,7 +101,7 @@ class Home extends Component {
   };
 
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
     return (
       <div>
         <div className="background">
@@ -165,4 +164,6 @@ class Home extends Component {
   }
 }
 
-export default withRouter(Home);
+const mapStateToProps = ({ user }) => ({ user });
+
+export default withRouter(connect(mapStateToProps)(Home));

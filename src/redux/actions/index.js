@@ -3,7 +3,7 @@ import {
   SET_ACCOUNTS,
   SET_TRANSACTIONS,
   ADD_TRANSACTIONS
-} from "./reducers/actionTypes";
+} from "../reducers/actionTypes";
 
 export const setUser = value => ({
   type: SET_USER,

@@ -18,6 +18,7 @@ import firebase from "firebase";
 import db from "../Configs/firebase";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Account extends Component {
   constructor(props) {
@@ -204,4 +205,6 @@ class Account extends Component {
   }
 }
 
-export default withRouter(Account);
+const mapStateToProps = ({ user }) => ({ user });
+
+export default withRouter(connect(mapStateToProps)(Account));
