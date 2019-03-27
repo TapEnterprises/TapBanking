@@ -20,6 +20,11 @@ import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { connect } from "react-redux";
+import {
+  setTransactions,
+  addTransactions,
+  setAccounts
+} from "../../redux/actions";
 
 class Transaction extends Component {
   constructor(props) {
@@ -41,75 +46,6 @@ class Transaction extends Component {
   }
 
   componentDidMount = () => {
-    const user = this.props.user;
-    const uid = user.uid;
-    const docRef = db.collection("users").doc(uid);
-
-    docRef
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          if (data.access_token) {
-            this.setState(() => ({ access_token: data.access_token }));
-          } else {
-            toast(
-              <div style={{ color: "black" }} onClick={this.redirect}>
-                You have not logged in with your bank. <br />{" "}
-                <strong>
-                  Click to add{" "}
-                  <span role="img" aria-label="bank">
-                    🏦
-                  </span>
-                </strong>
-              </div>,
-              {
-                toastId: "mainToast",
-                position: "bottom-center",
-                autoClose: false,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-              }
-            );
-          }
-        }
-      })
-      .then(() => {
-        axois
-          .post(
-            "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
-            {
-              access_token: this.state.access_token,
-              startDate: new Date(
-                new Date().setFullYear(this.currentDate.getFullYear() - 1)
-              )
-                .toISOString()
-                .split("T")[0],
-              endDate: this.currentDate.toISOString().split("T")[0]
-            }
-          )
-          .then(res => {
-            let categories = [];
-            let { transactions, accounts } = res.data.transactions;
-
-            transactions.map(trans => {
-              return trans.category.map(cat => {
-                if (!categories.includes(cat)) {
-                  categories.push(cat);
-                }
-                return null;
-              });
-            });
-
-            this.setState({ transactions, categories, accounts });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      });
-
     window.addEventListener("scroll", this.paginate, false);
   };
 
@@ -140,26 +76,7 @@ class Transaction extends Component {
             }
           )
           .then(res => {
-            this.setState(state => {
-              let { transactions } = state;
-              transactions.push(...res.data.transactions.transactions);
-              let { categories } = state;
-
-              transactions.map(trans => {
-                trans.category.map(cat => {
-                  if (!categories.includes(cat)) {
-                    categories.push(cat);
-                  }
-                  return null;
-                });
-                return null;
-              });
-
-              return {
-                transactions,
-                paginating: false
-              };
-            });
+            this.props.addTransactions(res.data.transactions.transactions);
           })
           .catch(err => {
             console.log(err);
@@ -223,7 +140,7 @@ class Transaction extends Component {
                   }
                 />
               </Grid>
-              {this.state.accounts.map(({ name, account_id }) => (
+              {this.props.accounts.map(({ name, account_id }) => (
                 <Grid item style={{ padding: 3 }} key={account_id}>
                   <Chip
                     label={name}
@@ -252,7 +169,7 @@ class Transaction extends Component {
                   }
                 />
               </Grid>
-              {this.state.categories.map(item => (
+              {this.props.categories.map(item => (
                 <Grid item style={{ padding: 3 }} key={item.index + item}>
                   <Chip
                     label={item}
@@ -269,7 +186,7 @@ class Transaction extends Component {
           </ExpansionPanelDetails>
         </ExpansionPanel>
         <List>
-          {this.state.transactions.map((transaction, index, transactions) => {
+          {this.props.transactions.map((transaction, index, transactions) => {
             if (this.filterCategory(transaction)) {
               const component = (
                 <div key={transaction.transaction_id}>
@@ -343,7 +260,7 @@ class Transaction extends Component {
             return null;
           })}
         </List>
-        {(this.state.transactions.length === 0 || this.state.paginating) && (
+        {(this.props.transactions.length === 0 || this.state.paginating) && (
           <Grid style={{ textAlign: "center" }} item xs={12}>
             <CircularProgress />
           </Grid>
@@ -353,6 +270,22 @@ class Transaction extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = ({ user, transactions, accounts, categories }) => ({
+  user,
+  transactions,
+  accounts,
+  categories
+});
 
-export default withRouter(connect(mapStateToProps)(Transaction));
+const mapDispatchToProps = dispatch => ({
+  setTransactions: transactions => dispatch(setTransactions(transactions)),
+  addTransactions: transactions => dispatch(addTransactions(transactions)),
+  setAccounts: accounts => dispatch(setAccounts(accounts))
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Transaction)
+);

@@ -9,11 +9,13 @@ import {
 } from "react-icons/fi";
 import "./style.css";
 import { toast } from "react-toastify";
+import axois from "axios";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
 import db from "../Configs/firebase";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { setAccounts, setTransactions } from "../../redux/actions";
 
 class Home extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class Home extends Component {
       data: {},
       toast: false
     };
+    this.currentDate = new Date();
     this.cardFunction = this.cardFunction.bind(this);
   }
 
@@ -38,7 +41,9 @@ class Home extends Component {
       .then(doc => {
         if (doc.exists) {
           const data = doc.data();
-          if (!data.access_token && data.dontSkip) {
+          if (data.access_token) {
+            this.access_token = data.access_token;
+          } else if (data.dontSkip) {
             this.handleToast();
           }
         } else {
@@ -50,7 +55,33 @@ class Home extends Component {
           this.handleToast();
         }
       })
-      .catch(e => {});
+      .then(() => {
+        if (this.props.transactions.length === 0) {
+          axois
+            .post(
+              "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
+              {
+                access_token: this.access_token,
+                startDate: new Date(
+                  new Date().setFullYear(this.currentDate.getFullYear() - 1)
+                )
+                  .toISOString()
+                  .split("T")[0],
+                endDate: this.currentDate.toISOString().split("T")[0]
+              }
+            )
+            .then(res => {
+              let { transactions, accounts } = res.data.transactions;
+
+              this.props.setTransactions(transactions);
+              this.props.setAccounts(accounts);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      })
+      .catch(e => e);
   };
 
   handleToast = () => {
@@ -164,6 +195,16 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = state => state;
 
-export default withRouter(connect(mapStateToProps)(Home));
+const mapDispatchToProps = dispatch => ({
+  setTransactions: transactions => dispatch(setTransactions(transactions)),
+  setAccounts: accounts => dispatch(setAccounts(accounts))
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Home)
+);

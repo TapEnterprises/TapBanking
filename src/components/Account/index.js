@@ -29,59 +29,6 @@ class Account extends Component {
     };
   }
 
-  componentDidMount = () => {
-    const user = firebase.auth().currentUser;
-    const uid = user.uid;
-    const docRef = db.collection("users").doc(uid);
-
-    docRef
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          if (data.access_token) {
-            this.setState(() => ({ access_token: data.access_token }));
-          } else {
-            toast(
-              <div style={{ color: "black" }} onClick={this.redirect}>
-                You have not logged in with your bank. <br />{" "}
-                <strong>
-                  Click to add{" "}
-                  <span role="img" aria-label="bank">
-                    🏦
-                  </span>
-                </strong>
-              </div>,
-              {
-                toastId: "mainToast",
-                position: "bottom-center",
-                autoClose: false,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true
-              }
-            );
-          }
-        }
-      })
-      .then(() => {
-        axois
-          .post(
-            "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/identity",
-            {
-              access_token: this.state.access_token
-            }
-          )
-          .then(res => {
-            this.setState(() => ({ identity: res.data.identity }));
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      });
-  };
-
   redirect = () => {
     this.props.history.push("/plaidlink");
   };
@@ -125,8 +72,8 @@ class Account extends Component {
               </CardContent>
             </Card>
           </Grid>
-          {this.state.identity ? (
-            this.state.identity.accounts.map(account => {
+          {this.props.accounts.length !== 0 ? (
+            this.props.accounts.map(account => {
               return (
                 <Grid key={account.account_id} item xs={12}>
                   <Card>
@@ -205,6 +152,6 @@ class Account extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = ({ user, accounts }) => ({ user, accounts });
 
 export default withRouter(connect(mapStateToProps)(Account));

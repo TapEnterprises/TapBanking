@@ -1,5 +1,6 @@
 export default {
   user: {},
   accounts: [],
-  transactions: []
+  transactions: [],
+  categories: []
 };

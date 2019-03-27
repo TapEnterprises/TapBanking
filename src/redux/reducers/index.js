@@ -19,17 +19,40 @@ export default (state, action) => {
         accounts: action.payload
       };
 
-    case SET_TRANSACTIONS:
+    case SET_TRANSACTIONS: {
+      let categories = [];
+
+      for (let trans of action.payload) {
+        for (let cat of trans.category) {
+          if (!categories.includes(cat)) {
+            categories.push(cat);
+          }
+        }
+      }
+
       return {
         ...state,
-        transactions: action.payload
+        transactions: action.payload,
+        categories
       };
+    }
 
-    case ADD_TRANSACTIONS:
+    case ADD_TRANSACTIONS: {
+      let categories = state.categories;
+
+      for (let trans of action.payload) {
+        for (let cat of trans.category) {
+          if (!categories.includes(cat)) {
+            categories.push(cat);
+          }
+        }
+      }
+
       return {
         ...state,
         transactions: [...state.transactions, ...action.payload]
       };
+    }
 
     default:
       return state;
