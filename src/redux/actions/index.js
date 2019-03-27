@@ -2,7 +2,8 @@ import {
   SET_USER,
   SET_ACCOUNTS,
   SET_TRANSACTIONS,
-  ADD_TRANSACTIONS
+  ADD_TRANSACTIONS,
+  SET_ACCESS_TOKEN
 } from "../reducers/actionTypes";
 
 export const setUser = value => ({
@@ -22,5 +23,10 @@ export const setTransactions = value => ({
 
 export const addTransactions = value => ({
   type: ADD_TRANSACTIONS,
+  payload: value
+});
+
+export const setAccessToken = value => ({
+  type: SET_ACCESS_TOKEN,
   payload: value
 });

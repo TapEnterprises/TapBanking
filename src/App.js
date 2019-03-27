@@ -24,12 +24,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {!this.props.user.uid ? (
+        {!this.props.user ? (
+          <Login />
+        ) : !this.props.user.uid ? (
           <Grid style={{ textAlign: "center" }} item xs={12}>
             <CircularProgress />
           </Grid>
-        ) : !this.props.user ? (
-          <Login />
         ) : (
           <Router>
             <Back>

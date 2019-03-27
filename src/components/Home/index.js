@@ -15,7 +15,11 @@ import cards from "../Navigation/cardData.json";
 import db from "../Configs/firebase";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { setAccounts, setTransactions } from "../../redux/actions";
+import {
+  setAccounts,
+  setTransactions,
+  setAccessToken
+} from "../../redux/actions";
 
 class Home extends Component {
   constructor(props) {
@@ -42,7 +46,7 @@ class Home extends Component {
         if (doc.exists) {
           const data = doc.data();
           if (data.access_token) {
-            this.access_token = data.access_token;
+            this.props.setAccessToken(data.access_token);
           } else if (data.dontSkip) {
             this.handleToast();
           }
@@ -61,7 +65,7 @@ class Home extends Component {
             .post(
               "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
               {
-                access_token: this.access_token,
+                access_token: this.props.access_token,
                 startDate: new Date(
                   new Date().setFullYear(this.currentDate.getFullYear() - 1)
                 )
@@ -81,7 +85,7 @@ class Home extends Component {
             });
         }
       })
-      .catch(e => e);
+      .catch(console.error);
   };
 
   handleToast = () => {
@@ -199,7 +203,8 @@ const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
   setTransactions: transactions => dispatch(setTransactions(transactions)),
-  setAccounts: accounts => dispatch(setAccounts(accounts))
+  setAccounts: accounts => dispatch(setAccounts(accounts)),
+  setAccessToken: token => dispatch(setAccessToken(token))
 });
 
 export default withRouter(

@@ -30,12 +30,7 @@ class Transaction extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      access_token: null,
-      identity: null,
-      transactions: [],
       categoryFilter: "",
-      categories: [],
-      accounts: [],
       accountFilter: {
         name: "",
         account_id: ""
@@ -58,7 +53,7 @@ class Transaction extends Component {
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
     if (bottom && !this.state.paginating) {
       this.setState({ paginating: true }, () => {
-        const { transactions } = this.state;
+        const { transactions, access_token } = this.props;
 
         let lastDate = new Date(transactions[transactions.length - 1].date);
         let newDate = new Date();
@@ -70,12 +65,13 @@ class Transaction extends Component {
           .post(
             "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
             {
-              access_token: this.state.access_token,
+              access_token,
               startDate: newDate,
               endDate: lastDate
             }
           )
           .then(res => {
+            this.setState({ paginating: false });
             this.props.addTransactions(res.data.transactions.transactions);
           })
           .catch(err => {
@@ -270,12 +266,7 @@ class Transaction extends Component {
   }
 }
 
-const mapStateToProps = ({ user, transactions, accounts, categories }) => ({
-  user,
-  transactions,
-  accounts,
-  categories
-});
+const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
   setTransactions: transactions => dispatch(setTransactions(transactions)),

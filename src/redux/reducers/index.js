@@ -2,7 +2,8 @@ import {
   SET_USER,
   SET_ACCOUNTS,
   SET_TRANSACTIONS,
-  ADD_TRANSACTIONS
+  ADD_TRANSACTIONS,
+  SET_ACCESS_TOKEN
 } from "./actionTypes";
 
 export default (state, action) => {
@@ -53,6 +54,12 @@ export default (state, action) => {
         transactions: [...state.transactions, ...action.payload]
       };
     }
+
+    case SET_ACCESS_TOKEN:
+      return {
+        ...state,
+        access_token: action.payload
+      };
 
     default:
       return state;

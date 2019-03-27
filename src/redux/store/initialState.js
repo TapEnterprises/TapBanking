@@ -2,5 +2,6 @@ export default {
   user: {},
   accounts: [],
   transactions: [],
-  categories: []
+  categories: [],
+  access_token: ""
 };
