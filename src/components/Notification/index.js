@@ -30,11 +30,13 @@ class Notification extends Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.checked }, () => {});
+    const toggle = event.target.checked;
     const docRef = db.collection("users").doc(this.props.user.uid);
     docRef.get().then(doc => {
       if (doc.exists) {
-        const data = doc.data();
-        console.log(data);
+        docRef.update({
+          dontSkip: toggle
+        });
       }
     });
   };
