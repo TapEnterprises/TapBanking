@@ -98,6 +98,7 @@ class Transaction extends Component {
                 if (!categories.includes(cat)) {
                   categories.push(cat);
                 }
+                return null;
               });
             });
 
@@ -148,7 +149,9 @@ class Transaction extends Component {
                   if (!categories.includes(cat)) {
                     categories.push(cat);
                   }
+                  return null;
                 });
+                return null;
               });
 
               return {
@@ -336,6 +339,7 @@ class Transaction extends Component {
 
               return component;
             }
+            return null;
           })}
         </List>
         {(this.state.transactions.length === 0 || this.state.paginating) && (

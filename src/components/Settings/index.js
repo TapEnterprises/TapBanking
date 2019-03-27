@@ -5,12 +5,11 @@ import {
   ListItemText,
   ListItemIcon,
   Icon,
-  Divider,
-  Typography
+  Divider
 } from "@material-ui/core";
 import firebase from "firebase";
 import { withRouter } from "react-router-dom";
-import { FiLogOut, FiBell, FiMonitor } from "react-icons/fi";
+import { FiLogOut, FiBell, FiGlobe } from "react-icons/fi";
 
 const Settings = props => {
   const signOut = () => {
@@ -41,6 +40,16 @@ const Settings = props => {
         </ListItemIcon>
         <ListItemText>Logout</ListItemText>
       </ListItem>
+      <Divider />
+      <ListItem>
+        <ListItemIcon>
+          <Icon>
+            <FiGlobe />
+          </Icon>
+        </ListItemIcon>
+        <ListItemText>Version 0.0.1</ListItemText>
+      </ListItem>
+      <Divider />
     </List>
   );
 };
