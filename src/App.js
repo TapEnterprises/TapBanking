@@ -9,6 +9,7 @@ import Savings from "./components/Savings";
 import Back from "./components/Navigation";
 import PlaidLink from "./components/PlaidLink";
 import { ToastContainer } from "react-toastify";
+import Notification from "./components/Notification";
 
 const App = props => {
   return (
@@ -20,6 +21,10 @@ const App = props => {
               path="/"
               exact
               component={() => <Home user={props.user} />}
+            />
+            <Route
+              path="/settings/notifications"
+              component={() => <Notification user={props.user} />}
             />
             <Route
               path="/settings"
