@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css?family=PT+Sans");
+.account h4 {
+  margin: 0;
+}
+
+.account {
+  font-family: "PT Sans", sans-serif;
+}
+
+.accountAvatar {
+  height: "100px";
+  width: "100px";
+  background-image: linear-gradient(to right, #787878, #707070);
+  font-size: "35px";
+}
+
+.account input {
+  -webkit-appearance: textfield;
+  background-color: white;
+  -webkit-rtl-ordering: logical;
+  cursor: text;
+  padding: 1px;
+  border-width: none;
+  border-style: none;
+  border-color: none;
+  border-image: none;
+}

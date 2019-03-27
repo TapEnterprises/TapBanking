@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "axios": "^0.18.0",
+    "currency-symbol-map": "^4.0.4",
     "firebase": "^5.8.6",
     "prettier": "^1.16.4",
     "react": "^16.8.4",

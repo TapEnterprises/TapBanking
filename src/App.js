@@ -9,6 +9,7 @@ import Savings from "./components/Savings";
 import Back from "./components/Navigation";
 import PlaidLink from "./components/PlaidLink";
 import { ToastContainer } from "react-toastify";
+import Notification from "./components/Notification";
 
 const App = props => {
   return (
@@ -21,11 +22,30 @@ const App = props => {
               exact
               component={() => <Home user={props.user} />}
             />
-            <Route path="/settings" component={Settings} />
-            <Route path="/account" component={Account} />
-            <Route path="/transaction" component={Transaction} />
-            <Route path="/budgets" component={Budgets} />
-            <Route path="/savings" component={Savings} />
+            <Route
+              path="/settings/notifications"
+              component={() => <Notification user={props.user} />}
+            />
+            <Route
+              path="/settings"
+              component={() => <Settings user={props.user} />}
+            />
+            <Route
+              path="/account"
+              component={() => <Account user={props.user} />}
+            />
+            <Route
+              path="/transaction"
+              component={() => <Transaction user={props.user} />}
+            />
+            <Route
+              path="/budgets"
+              component={() => <Budgets user={props.user} />}
+            />
+            <Route
+              path="/savings"
+              component={() => <Savings user={props.user} />}
+            />
             <Route path="/plaidlink" component={PlaidLink} />
           </Switch>
         </Back>
