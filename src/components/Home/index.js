@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 import axois from "axios";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
-import db from "../Configs/firebase";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
@@ -20,6 +19,7 @@ import {
   setTransactions,
   setAccessToken
 } from "../../redux/actions";
+import { pullInitialTransactions, pullVitalData } from "../../configs/api";
 
 class Home extends Component {
   constructor(props) {
@@ -36,56 +36,7 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    const user = this.props.user;
-    const uid = user.uid;
-    const docRef = db.collection("users").doc(uid);
-
-    docRef
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          const data = doc.data();
-          if (data.access_token) {
-            this.props.setAccessToken(data.access_token);
-          } else if (data.dontSkip) {
-            this.handleToast();
-          }
-        } else {
-          docRef.set({
-            access_token: null,
-            metadata: null,
-            dontSkip: true
-          });
-          this.handleToast();
-        }
-      })
-      .then(() => {
-        if (this.props.transactions.length === 0) {
-          axois
-            .post(
-              "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
-              {
-                access_token: this.props.access_token,
-                startDate: new Date(
-                  new Date().setFullYear(this.currentDate.getFullYear() - 1)
-                )
-                  .toISOString()
-                  .split("T")[0],
-                endDate: this.currentDate.toISOString().split("T")[0]
-              }
-            )
-            .then(res => {
-              let { transactions, accounts } = res.data.transactions;
-
-              this.props.setTransactions(transactions);
-              this.props.setAccounts(accounts);
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        }
-      })
-      .catch(console.error);
+    pullVitalData(() => this.handleToast());
   };
 
   handleToast = () => {

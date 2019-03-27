@@ -13,10 +13,6 @@ import {
 } from "@material-ui/core";
 import "./style.css";
 import { MdExpandMore } from "react-icons/md";
-import axois from "axios";
-import firebase from "firebase";
-import db from "../Configs/firebase";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 

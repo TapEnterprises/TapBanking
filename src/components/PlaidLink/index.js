@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PlaidLink from "react-plaid-link";
 import axios from "axios";
-import db from "../Configs/firebase";
+import db from "../../configs/firebase";
 import firebase from "firebase";
 import "./style.css";
 import {

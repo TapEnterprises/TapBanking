@@ -15,8 +15,6 @@ import {
 import { MdExpandMore } from "react-icons/md";
 import "./style.css";
 import axois from "axios";
-import db from "../Configs/firebase";
-import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { connect } from "react-redux";
@@ -25,6 +23,10 @@ import {
   addTransactions,
   setAccounts
 } from "../../redux/actions";
+import {
+  pullInitialTransactions,
+  pullMoreTransactions
+} from "../../configs/api";
 
 class Transaction extends Component {
   constructor(props) {
@@ -41,6 +43,8 @@ class Transaction extends Component {
   }
 
   componentDidMount = () => {
+    pullInitialTransactions();
+
     window.addEventListener("scroll", this.paginate, false);
   };
 
@@ -53,30 +57,7 @@ class Transaction extends Component {
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
     if (bottom && !this.state.paginating) {
       this.setState({ paginating: true }, () => {
-        const { transactions, access_token } = this.props;
-
-        let lastDate = new Date(transactions[transactions.length - 1].date);
-        let newDate = new Date();
-        newDate.setFullYear(lastDate.getFullYear() - 1);
-        newDate = newDate.toISOString().split("T")[0];
-        lastDate.setDate(lastDate.getDay() - 1);
-        lastDate = lastDate.toISOString().split("T")[0];
-        axois
-          .post(
-            "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
-            {
-              access_token,
-              startDate: newDate,
-              endDate: lastDate
-            }
-          )
-          .then(res => {
-            this.setState({ paginating: false });
-            this.props.addTransactions(res.data.transactions.transactions);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        pullMoreTransactions().then(() => this.setState({ paginating: false }));
       });
     }
   };

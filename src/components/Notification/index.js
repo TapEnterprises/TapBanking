@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import Switch from "@material-ui/core/Switch";
 import { FiBell, FiBellOff } from "react-icons/fi";
-import db from "../Configs/firebase";
+import db from "../../configs/firebase";
 
 class Notification extends Component {
   constructor(props) {
