@@ -19,7 +19,7 @@ const Settings = props => {
   };
 
   const notification = () => {
-    props.history.push("/notification");
+    props.history.push("/settings/notifications");
   };
 
   return (

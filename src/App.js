@@ -23,6 +23,10 @@ const App = props => {
               component={() => <Home user={props.user} />}
             />
             <Route
+              path="/settings/notifications"
+              component={() => <Notification user={props.user} />}
+            />
+            <Route
               path="/settings"
               component={() => <Settings user={props.user} />}
             />
@@ -43,10 +47,6 @@ const App = props => {
               component={() => <Savings user={props.user} />}
             />
             <Route path="/plaidlink" component={PlaidLink} />
-            <Route
-              path="/notification"
-              component={() => <Notification user={props.user} />}
-            />
           </Switch>
         </Back>
       </Router>
