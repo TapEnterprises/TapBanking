@@ -10,13 +10,11 @@ import {
   Typography,
   ExpansionPanelDetails,
   Chip,
-  ListSubheader,
-  IconButton
+  ListSubheader
 } from "@material-ui/core";
-import { MdExpandMore, MdClose } from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 import "./style.css";
 import axois from "axios";
-import firebase from "firebase";
 import db from "../Configs/firebase";
 import { toast } from "react-toastify";
 import { withRouter } from "react-router-dom";
@@ -96,7 +94,7 @@ class Transaction extends Component {
             let { transactions, accounts } = res.data.transactions;
 
             transactions.map(trans => {
-              trans.category.map(cat => {
+              return trans.category.map(cat => {
                 if (!categories.includes(cat)) {
                   categories.push(cat);
                 }
@@ -204,6 +202,39 @@ class Transaction extends Component {
           <ExpansionPanelDetails>
             <Grid container style={{ paddingTop: 5 }}>
               <Grid container item direction="column">
+                <Typography>Account:</Typography>
+              </Grid>
+              <Grid item style={{ padding: 3 }}>
+                <Chip
+                  label="All"
+                  onClick={() => {
+                    this.setState({
+                      accountFilter: { name: "", account_id: "" }
+                    });
+                  }}
+                  color={
+                    this.state.accountFilter.name === ""
+                      ? "secondary"
+                      : "default"
+                  }
+                />
+              </Grid>
+              {this.state.accounts.map(({ name, account_id }) => (
+                <Grid item style={{ padding: 3 }} key={account_id}>
+                  <Chip
+                    label={name}
+                    onClick={() => {
+                      this.setState({ accountFilter: { name, account_id } });
+                    }}
+                    color={
+                      this.state.accountFilter.name === name
+                        ? "secondary"
+                        : "default"
+                    }
+                  />
+                </Grid>
+              ))}
+              <Grid container item direction="column">
                 <Typography>Categories:</Typography>
               </Grid>
               <Grid item style={{ padding: 3 }}>
@@ -226,37 +257,6 @@ class Transaction extends Component {
                     }}
                     color={
                       this.state.categoryFilter === item ? "primary" : "default"
-                    }
-                  />
-                </Grid>
-              ))}
-              <Grid container item direction="column">
-                <Typography>Account:</Typography>
-              </Grid>
-              <Grid item style={{ padding: 3 }}>
-                <Chip
-                  label="None"
-                  onClick={() => {
-                    this.setState({ accountFilter: { name: "", id: "" } });
-                  }}
-                  color={
-                    this.state.accountFilter.name === ""
-                      ? "secondary"
-                      : "default"
-                  }
-                />
-              </Grid>
-              {this.state.accounts.map(({ name, account_id }) => (
-                <Grid item style={{ padding: 3 }} key={account_id}>
-                  <Chip
-                    label={name}
-                    onClick={() => {
-                      this.setState({ accountFilter: { name, account_id } });
-                    }}
-                    color={
-                      this.state.accountFilter.name === name
-                        ? "secondary"
-                        : "default"
                     }
                   />
                 </Grid>
