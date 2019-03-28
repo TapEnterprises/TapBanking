@@ -8,7 +8,6 @@ import {
   FiShoppingBag
 } from "react-icons/fi";
 import "./style.css";
-import { toast } from "react-toastify";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
 import { withRouter } from "react-router-dom";
@@ -35,36 +34,7 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    pullVitalData(() => this.handleToast());
-  };
-
-  handleToast = () => {
-    if (!toast.isActive("mainToast")) {
-      toast(
-        <div style={{ color: "black" }} onClick={this.redirect}>
-          You have not logged in with your bank. <br />{" "}
-          <strong>
-            Click to add{" "}
-            <span role="img" aria-label="bank">
-              🏦
-            </span>
-          </strong>
-        </div>,
-        {
-          toastId: "mainToast",
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true
-        }
-      );
-    }
-  };
-
-  redirect = () => {
-    this.props.history.push("/plaidlink");
+    pullVitalData();
   };
 
   cardFunction = () => {

@@ -6,12 +6,15 @@ import {
   addTransactions,
   setAccessToken
 } from "../redux/actions";
+import React from "react";
 import db from "./firebase";
+import { toast } from "react-toastify";
+import history from "./history";
 
 const currentDate = new Date();
 let total_transactions = 0;
 
-export const pullVitalData = async toastCB => {
+export const pullVitalData = async () => {
   const { access_token } = store.getState();
   const { user } = store.getState();
   const uid = user.uid;
@@ -25,14 +28,14 @@ export const pullVitalData = async toastCB => {
         store.dispatch(setAccessToken(data.access_token));
         pullInitialTransactions();
       } else if (data.dontSkip) {
-        toastCB();
+        handleToast();
       }
     } else {
       docRef.set({
         access_token: null,
         dontSkip: true
       });
-      toastCB();
+      handleToast();
     }
   } else {
     pullInitialTransactions();
@@ -81,6 +84,35 @@ export const pullMoreTransactions = async () => {
       }
     );
     store.dispatch(addTransactions(res.data.transactions.transactions));
+  }
+};
+
+const redirect = () => {
+  history.push("/plaidlink");
+};
+
+const handleToast = () => {
+  if (!toast.isActive("mainToast")) {
+    toast(
+      <div style={{ color: "black" }} onClick={redirect}>
+        You have not logged in with your bank. <br />{" "}
+        <strong>
+          Click to add{" "}
+          <span role="img" aria-label="bank">
+            🏦
+          </span>
+        </strong>
+      </div>,
+      {
+        toastId: "mainToast",
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true
+      }
+    );
   }
 };
 
