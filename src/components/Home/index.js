@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Avatar, Card, CardContent, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import {
   FiShoppingCart,
   FiSettings,
@@ -56,7 +56,6 @@ class Home extends Component {
   };
 
   render() {
-    const { user } = this.props;
     return (
       <div>
         <div className="background" />
