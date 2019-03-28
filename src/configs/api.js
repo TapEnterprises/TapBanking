@@ -29,7 +29,6 @@ export const pullVitalData = toastCB => {
         } else {
           docRef.set({
             access_token: null,
-            metadata: null,
             dontSkip: true
           });
           toastCB();
