@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import Home from "./components/Home";
 import Account from "./components/Account";
 import Settings from "./components/Settings";
@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { setUser } from "./redux/actions";
 import firebase from "firebase";
 import { CircularProgress, Grid } from "@material-ui/core";
+import history from "./configs/history";
 
 class App extends Component {
   componentWillMount() {
@@ -31,7 +32,7 @@ class App extends Component {
             <CircularProgress />
           </Grid>
         ) : (
-          <Router>
+          <Router history={history}>
             <Back>
               <Switch>
                 <Route path="/" exact component={Home} />
