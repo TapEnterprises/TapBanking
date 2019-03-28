@@ -13,11 +13,9 @@ const currentDate = new Date();
 export const pullVitalData = toastCB => {
   const { access_token } = store.getState();
   const { user } = store.getState();
-
   const uid = user.uid;
   const docRef = db.collection("users").doc(uid);
-
-  if (access_token) {
+  if (!access_token) {
     return docRef
       .get()
       .then(doc => {

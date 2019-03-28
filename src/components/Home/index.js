@@ -9,7 +9,6 @@ import {
 } from "react-icons/fi";
 import "./style.css";
 import { toast } from "react-toastify";
-import axois from "axios";
 import CentralCard from "../Navigation/centralCard";
 import cards from "../Navigation/cardData.json";
 import { withRouter } from "react-router-dom";
@@ -19,7 +18,7 @@ import {
   setTransactions,
   setAccessToken
 } from "../../redux/actions";
-import { pullInitialTransactions, pullVitalData } from "../../configs/api";
+import { pullVitalData } from "../../configs/api";
 
 class Home extends Component {
   constructor(props) {

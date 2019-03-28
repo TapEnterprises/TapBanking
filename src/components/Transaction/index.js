@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import { MdExpandMore } from "react-icons/md";
 import "./style.css";
-import axois from "axios";
 import { withRouter } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { connect } from "react-redux";

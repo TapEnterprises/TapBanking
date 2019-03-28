@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import store from "../../redux/store";
 import {
   List,
   ListItem,
@@ -19,7 +20,8 @@ class Notification extends Component {
   }
 
   componentDidMount = () => {
-    const docRef = db.collection("users").doc(this.props.user.uid);
+    const { user } = store.getState();
+    const docRef = db.collection("users").doc(user.uid);
     docRef.get().then(doc => {
       if (doc.exists) {
         const data = doc.data();
@@ -29,9 +31,10 @@ class Notification extends Component {
   };
 
   handleChange = name => event => {
+    const { user } = store.getState();
     this.setState({ [name]: event.target.checked }, () => {});
     const toggle = event.target.checked;
-    const docRef = db.collection("users").doc(this.props.user.uid);
+    const docRef = db.collection("users").doc(user.uid);
     docRef.get().then(doc => {
       if (doc.exists) {
         docRef.update({
