@@ -9,7 +9,6 @@ import {
 import db from "./firebase";
 
 const currentDate = new Date();
-let offset = 0;
 let total_transactions = 0;
 
 export const pullVitalData = async toastCB => {
@@ -17,6 +16,7 @@ export const pullVitalData = async toastCB => {
   const { user } = store.getState();
   const uid = user.uid;
   const docRef = db.collection("users").doc(uid);
+
   if (!access_token) {
     const doc = await docRef.get();
     if (doc.exists) {
@@ -67,7 +67,8 @@ export const pullInitialTransactions = () => {
 };
 
 export const pullMoreTransactions = async () => {
-  const { access_token } = store.getState();
+  const { access_token, transactions } = store.getState();
+  const offset = transactions.length;
 
   if (offset !== total_transactions) {
     const res = await axois.post(
@@ -80,6 +81,7 @@ export const pullMoreTransactions = async () => {
       }
     );
     store.dispatch(addTransactions(res.data.transactions.transactions));
-    offset += res.data.transactions.transactions.length;
   }
 };
+
+store.subscribe(pullVitalData);

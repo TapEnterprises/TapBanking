@@ -15,6 +15,7 @@ import "./style.css";
 import { MdExpandMore } from "react-icons/md";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { pullVitalData } from "../../configs/api";
 
 class Account extends Component {
   constructor(props) {
@@ -23,6 +24,10 @@ class Account extends Component {
       access_token: null,
       identity: null
     };
+  }
+
+  componentDidMount() {
+    pullVitalData();
   }
 
   redirect = () => {

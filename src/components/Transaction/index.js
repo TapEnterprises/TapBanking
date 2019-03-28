@@ -22,10 +22,7 @@ import {
   addTransactions,
   setAccounts
 } from "../../redux/actions";
-import {
-  pullInitialTransactions,
-  pullMoreTransactions
-} from "../../configs/api";
+import { pullMoreTransactions, pullVitalData } from "../../configs/api";
 
 class Transaction extends Component {
   constructor(props) {
@@ -42,7 +39,7 @@ class Transaction extends Component {
   }
 
   componentDidMount = () => {
-    pullInitialTransactions();
+    pullVitalData();
 
     window.addEventListener("scroll", this.paginate, false);
   };
