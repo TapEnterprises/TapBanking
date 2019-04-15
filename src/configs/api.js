@@ -4,7 +4,7 @@ import {
   setTransactions,
   setAccounts,
   addTransactions,
-  setAccessToken
+  setFirebaseData
 } from "../redux/actions";
 import React from "react";
 import db from "./firebase";
@@ -13,39 +13,46 @@ import history from "./history";
 
 const currentDate = new Date();
 let total_transactions = 0;
+let loadingTransactions = false;
 
 export const pullVitalData = async () => {
-  const { access_token } = store.getState();
+  const { access_token } = store.getState().firebaseData;
   const { user } = store.getState();
-  const uid = user.uid;
-  const docRef = db.collection("users").doc(uid);
 
-  if (!access_token) {
-    const doc = await docRef.get();
-    if (doc.exists) {
-      const data = doc.data();
-      if (data.access_token) {
-        store.dispatch(setAccessToken(data.access_token));
-        pullInitialTransactions();
-      } else if (data.dontSkip) {
+  if (user) {
+    const uid = user.uid;
+    const docRef = db.collection("users").doc(uid);
+
+    if (!access_token) {
+      const doc = await docRef.get();
+      if (doc.exists) {
+        const data = doc.data();
+        if (data.access_token) {
+          store.dispatch(setFirebaseData(data));
+          pullInitialTransactions();
+        } else if (data.dontSkip) {
+          handleToast();
+        }
+      } else {
+        docRef.set({
+          access_token: null,
+          dontSkip: true
+        });
         handleToast();
       }
     } else {
-      docRef.set({
-        access_token: null,
-        dontSkip: true
-      });
-      handleToast();
+      pullInitialTransactions();
     }
-  } else {
-    pullInitialTransactions();
   }
 };
 
 export const pullInitialTransactions = () => {
-  const { transactions, access_token } = store.getState();
+  const { transactions, firebaseData } = store.getState();
+  const { access_token } = firebaseData;
 
-  if (transactions.length === 0) {
+  if (transactions.length === 0 && !loadingTransactions) {
+    loadingTransactions = true;
+
     return axois
       .post(
         "https://us-central1-tapbanking.cloudfunctions.net/PlaidAPI/transactions",
@@ -62,6 +69,7 @@ export const pullInitialTransactions = () => {
 
         store.dispatch(setTransactions(transactions));
         store.dispatch(setAccounts(accounts));
+        loadingTransactions = false;
       })
       .catch(err => {
         console.log(err);
@@ -70,7 +78,8 @@ export const pullInitialTransactions = () => {
 };
 
 export const pullMoreTransactions = async () => {
-  const { access_token, transactions } = store.getState();
+  const { firebaseData, transactions } = store.getState();
+  const { access_token } = firebaseData;
   const offset = transactions.length;
 
   if (offset !== total_transactions) {

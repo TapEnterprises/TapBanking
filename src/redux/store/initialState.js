@@ -3,5 +3,6 @@ export default {
   accounts: [],
   transactions: [],
   categories: [],
-  access_token: ""
+  access_token: "",
+  firebaseData: {}
 };

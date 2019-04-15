@@ -3,7 +3,8 @@ import {
   SET_ACCOUNTS,
   SET_TRANSACTIONS,
   ADD_TRANSACTIONS,
-  SET_ACCESS_TOKEN
+  SET_ACCESS_TOKEN,
+  SET_FIREBASE_DATA
 } from "./actionTypes";
 
 export default (state, action) => {
@@ -59,6 +60,12 @@ export default (state, action) => {
       return {
         ...state,
         access_token: action.payload
+      };
+
+    case SET_FIREBASE_DATA:
+      return {
+        ...state,
+        firebaseData: action.payload
       };
 
     default:

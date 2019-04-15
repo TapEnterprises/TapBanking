@@ -10,7 +10,7 @@ import Back from "./components/Navigation";
 import PlaidLink from "./components/PlaidLink";
 import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
-import Notification from "./components/Notification";
+import Notification from "./components/Settings/Notification";
 import { connect } from "react-redux";
 import { setUser } from "./redux/actions";
 import firebase from "firebase";

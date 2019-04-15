@@ -3,7 +3,8 @@ import {
   SET_ACCOUNTS,
   SET_TRANSACTIONS,
   ADD_TRANSACTIONS,
-  SET_ACCESS_TOKEN
+  SET_ACCESS_TOKEN,
+  SET_FIREBASE_DATA
 } from "../reducers/actionTypes";
 
 export const setUser = value => ({
@@ -28,5 +29,10 @@ export const addTransactions = value => ({
 
 export const setAccessToken = value => ({
   type: SET_ACCESS_TOKEN,
+  payload: value
+});
+
+export const setFirebaseData = value => ({
+  type: SET_FIREBASE_DATA,
   payload: value
 });
