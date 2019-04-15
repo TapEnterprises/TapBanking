@@ -8,7 +8,10 @@ import {
 } from "@material-ui/core";
 import Switch from "@material-ui/core/Switch";
 import { FiBell, FiBellOff } from "react-icons/fi";
-import db from "../Configs/firebase";
+import db from "../../../configs/firebase";
+import { connect } from "react-redux";
+import { setFirebaseData } from "../../../redux/actions";
+import { pullVitalData } from "../../../configs/api";
 
 class Notification extends Component {
   constructor(props) {
@@ -18,20 +21,14 @@ class Notification extends Component {
     };
   }
 
-  componentDidMount = () => {
-    const docRef = db.collection("users").doc(this.props.user.uid);
-    docRef.get().then(doc => {
-      if (doc.exists) {
-        const data = doc.data();
-        this.setState(() => ({ allNotification: data.dontSkip }));
-      }
-    });
-  };
+  componentDidMount() {
+    pullVitalData();
+  }
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.checked }, () => {});
+  handleChange = event => {
+    const { user } = this.props;
     const toggle = event.target.checked;
-    const docRef = db.collection("users").doc(this.props.user.uid);
+    const docRef = db.collection("users").doc(user.uid);
     docRef.get().then(doc => {
       if (doc.exists) {
         docRef.update({
@@ -48,14 +45,13 @@ class Notification extends Component {
           <ListItem>
             <ListItemIcon>
               <Icon>
-                {this.state.allNotification ? <FiBell /> : <FiBellOff />}
+                {this.props.allNotification ? <FiBell /> : <FiBellOff />}
               </Icon>
             </ListItemIcon>
             <ListItemText>All Notifications</ListItemText>
             <Switch
-              checked={this.state.allNotification}
-              onChange={this.handleChange("allNotification")}
-              value="allNotification"
+              checked={this.props.allNotification}
+              onChange={this.handleChange}
             />
           </ListItem>
         </List>
@@ -64,4 +60,16 @@ class Notification extends Component {
   }
 }
 
-export default Notification;
+const mapStateToProps = ({ firebaseData, user }) => ({
+  allNotification: firebaseData.dontSkip,
+  user
+});
+
+const mapDispatchToProps = dispatch => ({
+  setFirebaseData: firebaseData => dispatch(setFirebaseData(firebaseData))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Notification);

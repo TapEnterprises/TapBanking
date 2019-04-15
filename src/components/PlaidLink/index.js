@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PlaidLink from "react-plaid-link";
 import axios from "axios";
-import db from "../Configs/firebase";
+import db from "../../configs/firebase";
 import firebase from "firebase";
 import "./style.css";
 import {
@@ -21,8 +21,7 @@ class Plaid extends Component {
     const user = firebase.auth().currentUser;
     this.state = {
       access_token: null,
-      uid: user.uid,
-      metadata: null
+      uid: user.uid
     };
   }
 
@@ -38,8 +37,7 @@ class Plaid extends Component {
       )
       .then(res => {
         this.setState(() => ({
-          access_token: res.data.access_token,
-          metadata
+          access_token: res.data.access_token
         }));
       })
       .then(() => {
@@ -49,13 +47,11 @@ class Plaid extends Component {
           .then(doc => {
             if (doc.exists) {
               docRef.update({
-                access_token: this.state.access_token,
-                metadata: this.state.metadata
+                access_token: this.state.access_token
               });
             } else {
               docRef.set({
-                access_token: this.state.access_token,
-                metadata: this.state.metadata
+                access_token: this.state.access_token
               });
             }
           })
