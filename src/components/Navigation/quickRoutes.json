@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Dashboard",
+    "path": "/"
+  },
+  {
+    "name": "Transaction",
+    "path": "/transaction"
+  },
+  {
+    "name": "Account",
+    "path": "/account"
+  },
+  {
+    "name": "Budget",
+    "path": "/budgets"
+  },
+  {
+    "name": "Savings",
+    "path": "/savings"
+  },
+  {
+    "name": "Settings",
+    "path": "/settings"
+  }
+]

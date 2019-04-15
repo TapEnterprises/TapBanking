@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Avatar, Card, CardContent, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import {
   FiShoppingCart,
   FiSettings,
@@ -56,41 +56,9 @@ class Home extends Component {
   };
 
   render() {
-    const { user } = this.props;
     return (
       <div>
-        <div className="background">
-          <Grid justify="center" container>
-            <Card onClick={this.cardFunction}>
-              <CardContent
-                className={
-                  this.state.isBig ? "bigContainer" : this.state.smallContainer
-                }
-              >
-                <Avatar
-                  style={{ height: 100, width: 100, fontSize: 35 }}
-                  className="homeAvatar"
-                  src={user.photoURL}
-                >
-                  {user.displayName ? user.displayName.charAt(0) : null}
-                </Avatar>
-                {this.state.fadeIn && this.state.isBig ? (
-                  <div className="fadeIn">
-                    <h4>
-                      Current User: <br /> {user.displayName}
-                    </h4>
-                    <h4>
-                      Spending Available: <br /> Need Data
-                    </h4>
-                    <h4>
-                      Total Savings: <br /> Need Data
-                    </h4>
-                  </div>
-                ) : null}
-              </CardContent>
-            </Card>
-          </Grid>
-        </div>
+        <div className="background" />
         <div
           className="foreground"
           style={{ padding: 20, textAlign: "center" }}
