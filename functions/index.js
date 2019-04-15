@@ -12,7 +12,6 @@ const util = require("util");
 const PLAID_CLIENT_ID = "5c47bf3700f50200116f1b6d";
 const PLAID_SECRET = "9b67c9692b9e4e71b2dcf86f326f65";
 const PLAID_PUBLIC_KEY = "d6fed0482ed18248ae2e4380d924fd";
-const PLAID_PRODUCTS = "transactions";
 const PLAID_ENV = "sandbox";
 
 const client = new plaid.Client(
@@ -54,16 +53,18 @@ app.post("/get_access_token", (request, response, next) => {
 app.post("/transactions", (request, response, next) => {
   const startDate = request.body.startDate;
   const endDate = request.body.endDate;
+  const count = request.body.count;
+  const offset = request.body.offset;
   const ACCESS_TOKEN = request.body.access_token;
   client.getTransactions(
     ACCESS_TOKEN,
     startDate,
     endDate,
     {
-      count: 250,
-      offset: 0
+      count: count ? count : 30,
+      offset: offset ? offset : 0
     },
-    function(error, transactionsResponse) {
+    (error, transactionsResponse) => {
       if (error !== null) {
         prettyPrintResponse(error);
         return response.json({
