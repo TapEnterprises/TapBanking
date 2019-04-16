@@ -10,9 +10,11 @@ import {
   Typography,
   ExpansionPanelDetails,
   Chip,
-  ListSubheader
+  ListSubheader,
+  SwipeableDrawer,
+  Paper,
+  Divider
 } from "@material-ui/core";
-import { MdExpandMore } from "react-icons/md";
 import "./style.css";
 import { withRouter } from "react-router-dom";
 import getSymbolFromCurrency from "currency-symbol-map";
@@ -32,7 +34,8 @@ class Transaction extends Component {
       accountFilter: {
         name: "",
         account_id: ""
-      }
+      },
+      drawer: false
     };
 
     this.currentDate = new Date();
@@ -62,6 +65,12 @@ class Transaction extends Component {
     this.props.history.push("/plaidlink");
   };
 
+  toggleDrawer = () => {
+    this.setState(preState => ({
+      drawer: !preState.drawer
+    }));
+  };
+
   formatAmount = (x, currencyCode) => {
     return `${x < 0 ? "-" : ""}${getSymbolFromCurrency(currencyCode)}${Math.abs(
       x
@@ -89,77 +98,89 @@ class Transaction extends Component {
     let lastDate = "";
     return (
       <Grid>
-        <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<MdExpandMore />}>
-            <Typography>Filters</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Grid container style={{ paddingTop: 5 }}>
-              <Grid container item direction="column">
-                <Typography>Account:</Typography>
-              </Grid>
-              <Grid item style={{ padding: 3 }}>
-                <Chip
-                  label="All"
-                  onClick={() => {
-                    this.setState({
-                      accountFilter: { name: "", account_id: "" }
-                    });
-                  }}
-                  color={
-                    this.state.accountFilter.name === ""
-                      ? "secondary"
-                      : "default"
-                  }
-                />
-              </Grid>
-              {this.props.accounts.map(({ name, account_id }) => (
-                <Grid item style={{ padding: 3 }} key={account_id}>
-                  <Chip
-                    label={name}
-                    onClick={() => {
-                      this.setState({ accountFilter: { name, account_id } });
-                    }}
-                    color={
-                      this.state.accountFilter.name === name
-                        ? "secondary"
-                        : "default"
-                    }
-                  />
-                </Grid>
-              ))}
-              <Grid container item direction="column">
-                <Typography>Categories:</Typography>
-              </Grid>
-              <Grid item style={{ padding: 3 }}>
-                <Chip
-                  label="None"
-                  onClick={() => {
-                    this.setState({ categoryFilter: "" });
-                  }}
-                  color={
-                    this.state.categoryFilter === "" ? "primary" : "default"
-                  }
-                />
-              </Grid>
-              {this.props.categories.map(item => (
-                <Grid item style={{ padding: 3 }} key={item.index + item}>
-                  <Chip
-                    label={item}
-                    onClick={() => {
-                      this.setState({ categoryFilter: item });
-                    }}
-                    color={
-                      this.state.categoryFilter === item ? "primary" : "default"
-                    }
-                  />
-                </Grid>
-              ))}
+        <Paper
+          style={{ padding: "10px", textAlign: "center" }}
+          elevation={1}
+          onClick={this.toggleDrawer}
+        >
+          <Chip
+            color="primary"
+            label="Filters"
+            style={{ width: "100%", fontSize: "15px" }}
+          />
+        </Paper>
+        <SwipeableDrawer
+          anchor="bottom"
+          open={this.state.drawer}
+          onClose={this.toggleDrawer}
+          onOpen={this.toggleDrawer}
+          style={{ borderRadius: "10px" }}
+        >
+          <Grid container style={{ paddingTop: 5, textAlign: "center" }}>
+            <Grid container item direction="column">
+              <Typography variant="h6">Account</Typography>
+              <Divider variant="middle" style={{ marginBottom: "10px" }} />
             </Grid>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+
+            <Chip
+              style={{ margin: "5px" }}
+              label="All"
+              onClick={() => {
+                this.setState({
+                  accountFilter: { name: "", account_id: "" }
+                });
+              }}
+              color={
+                this.state.accountFilter.name === "" ? "secondary" : "default"
+              }
+            />
+            {this.props.accounts.map(({ name, account_id }) => (
+              <Chip
+                key={account_id}
+                style={{ margin: "5px" }}
+                label={name}
+                onClick={() => {
+                  this.setState({
+                    accountFilter: { name, account_id }
+                  });
+                }}
+                color={
+                  this.state.accountFilter.name === name
+                    ? "secondary"
+                    : "default"
+                }
+              />
+            ))}
+            <Grid container item direction="column">
+              <Typography variant="h6">Categories</Typography>
+              <Divider variant="middle" style={{ marginBottom: "10px" }} />
+            </Grid>
+            <Chip
+              style={{ margin: "5px" }}
+              label="None"
+              onClick={() => {
+                this.setState({ categoryFilter: "" });
+              }}
+              color={this.state.categoryFilter === "" ? "primary" : "default"}
+            />
+            {this.props.categories.map(item => (
+              <Chip
+                style={{ margin: "5px" }}
+                key={item.index + item}
+                label={item}
+                onClick={() => {
+                  this.setState({ categoryFilter: item });
+                }}
+                color={
+                  this.state.categoryFilter === item ? "primary" : "default"
+                }
+              />
+            ))}
+            <div style={{ height: "10vh" }} />
+          </Grid>
+        </SwipeableDrawer>
         <List>
-          {this.props.transactions.map((transaction, index, transactions) => {
+          {this.props.transactions.map(transaction => {
             if (this.filterCategory(transaction)) {
               const component = (
                 <div key={transaction.transaction_id}>
@@ -211,9 +232,16 @@ class Transaction extends Component {
                                 key={item.index + item}
                               >
                                 <Chip
+                                  color={
+                                    this.state.categoryFilter === item
+                                      ? "primary"
+                                      : "default"
+                                  }
                                   label={item}
                                   onClick={() => {
-                                    this.setState({ categoryFilter: item });
+                                    this.setState({
+                                      categoryFilter: item
+                                    });
                                   }}
                                 />
                               </Grid>
