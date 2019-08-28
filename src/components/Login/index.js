@@ -4,6 +4,7 @@ import firebase from "firebase";
 import "./style.css";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
+import Zoom from "@material-ui/core/Zoom";
 
 class Login extends Component {
   constructor() {
@@ -75,7 +76,7 @@ class Login extends Component {
               }}
             >
               <div style={{ display: "inline-block", paddingBottom: "2em" }}>
-                {!this.state.loggingIn && (
+                <Zoom in={!this.state.loggingIn} mountOnEnter unmountOnExit>
                   <div>
                     <TextField
                       label="First Name"
@@ -96,7 +97,8 @@ class Login extends Component {
                       style={{ width: "70vw" }}
                     />
                   </div>
-                )}
+                </Zoom>
+
                 <TextField
                   label="Email"
                   name="Email"
