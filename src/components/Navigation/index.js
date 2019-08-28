@@ -41,11 +41,6 @@ class Back extends Component {
       history.goBack();
     };
 
-    const redirect = route => {
-      this.handleClose();
-      history.push(route);
-    };
-
     if (!locationWithoutBack()) {
       var indices = [];
       for (var i = 0; i < Path.length; i++) {
