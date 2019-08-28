@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Typography,
-  Menu,
-  MenuItem
-} from "@material-ui/core";
-import { FiChevronLeft, FiMoreVertical } from "react-icons/fi";
+import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { FiChevronLeft } from "react-icons/fi";
 import { IconContext } from "react-icons";
 import { withRouter } from "react-router-dom";
-import routes from "./quickRoutes.json";
 
 class Back extends Component {
   constructor(props) {
@@ -83,31 +75,6 @@ class Back extends Component {
                 {displayTitle.charAt(1).toUpperCase() +
                   displayTitle.slice(1).substr(1)}
               </Typography>
-              <IconButton onClick={this.handleClick}>
-                <IconContext.Provider value={{ color: "white" }}>
-                  <FiMoreVertical />
-                </IconContext.Provider>
-              </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={this.handleClose}
-              >
-                {routes.map(route => {
-                  if (route.path !== Path) {
-                    return (
-                      <MenuItem
-                        key={route.path}
-                        onClick={() => redirect(route.path)}
-                      >
-                        {route.name}
-                      </MenuItem>
-                    );
-                  }
-                  return null;
-                })}
-              </Menu>
             </Toolbar>
           </AppBar>
           <div style={{ paddingTop: "3vh", paddingBottom: "50px" }} />
